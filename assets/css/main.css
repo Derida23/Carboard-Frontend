@@ -1,0 +1,25 @@
+h1 {
+  @apply text-4xl;
+  @apply font-semibold;
+}
+
+h2 {
+  @apply text-3xl;
+  @apply font-semibold;
+}
+
+h3 {
+  @apply text-2xl;
+  @apply font-semibold;
+}
+
+h4 {
+  @apply text-xl;
+  @apply font-semibold;
+}
+
+.flex-center {
+  @apply flex;
+  @apply items-center;
+  @apply justify-center;
+}
