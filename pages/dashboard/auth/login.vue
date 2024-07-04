@@ -2,6 +2,8 @@
 import { z } from 'zod'
 import { LoginSchema } from '~/schemas/auth-schema'
 import type { FormSubmitEvent } from '#ui/types'
+import { useApiAuth } from '~/composables/api/useApiAuth';
+import type { ErrorResponse, Notification } from '~/types';
 
 definePageMeta({
   layout: 'dashboard',
@@ -14,16 +16,42 @@ useHead({
 
 type Schema = z.output<typeof LoginSchema>
 
+const { onSign } = useApiAuth()
+
 const showPassword = ref(false)
 const isOpenForgot = ref(false)
+const isLoading = ref(false)
 const state = reactive({
   email: undefined,
   password: undefined
 })
+const notification: Notification = reactive({
+  status: "warning",
+  title: "Forgot Password?",
+  description: "Please contact admin via email <span class='font-bold'>admin@gmail.com</span> for reset password your account"
+})
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
-  // Do something with data
-  console.log(event.data)
+  isLoading.value = true
+  await onSign(event.data, {
+    onSuccess: (data: any) => {
+      isLoading.value = false
+      console.log(data)
+    },
+    onError: (error: ErrorResponse) => {
+      isLoading.value = false
+      onNotification('error', error.body.error, error.body.message)
+    }
+  })
+}
+
+function onNotification(type: 'warning' | 'error' | 'success', title: string, description: string) {
+  isOpenForgot.value = true
+
+  notification.status = type
+  notification.title = title
+  notification.description = description
+
 }
 </script>
 
@@ -38,7 +66,6 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           <h1>Welcome Back!</h1>
           <p>Please login to your account</p>
         </section>
-
         <UForm :schema="LoginSchema" :state="state" class="space-y-4" @submit="onSubmit">
           <UFormGroup label="Email" name="email">
             <UInput v-model="state.email" icon="i-heroicons-envelope" size="lg" />
@@ -54,9 +81,12 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             </UInput>
           </UFormGroup>
 
-          <p class="login-forgot" @click="isOpenForgot = true">Forgot password ?</p>
+          <p class="login-forgot"
+            @click="onNotification('warning', 'Forgot Password?', 'Please contact admin via email <span class=\'font-bold\'>admin@gmail.com</span> for reset password your account')">
+            Forgot password ?
+          </p>
 
-          <UButton size="lg" type="submit" block class="!mt-5">
+          <UButton size="lg" type="submit" block class="!mt-5" :loading="isLoading">
             Submit
           </UButton>
         </UForm>
@@ -75,14 +105,9 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     </section>
   </div>
 
-  <UModal v-model="isOpenForgot">
-      <div class="p-10 text-center">
-        <h3 >Forgot Password?</h3>
-        <div class="mt-5">
-          Please contact admin via email <span class="font-bold">admin@gmail.com</span> for reset password your account
-        </div>
-      </div>
-    </UModal>
+  <ModalNotification v-model="isOpenForgot" :status="notification.status" :title="notification.title">
+    <div v-html="notification.description" /> 
+  </ModalNotification>
 </template>
 
 <style scoped lang="postcss">
@@ -116,15 +141,15 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       }
 
       img {
-        @apply w-40;
+        @apply w-36;
         @apply mb-5;
       }
     }
 
     &-forgot {
-      @apply text-right; 
+      @apply text-right;
       @apply cursor-pointer;
-      @apply  hover:text-orange-500 
+      @apply hover:text-orange-500
     }
 
     &-bg {
@@ -139,7 +164,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         @apply w-full;
         @apply h-full;
         @apply p-10;
-        @apply shadow-[0_8px_30px_rgb(0,0,0,0.01)];
+
         h1 {
           @apply pt-3;
           @apply pl-3;
