@@ -6,4 +6,7 @@ export const API_ENDPOINT: ApiEndpoints = {
   AUTH: {
     LOGIN: `/api/auth/login`,
   },
+  USER: {
+    ME: `/api/users/me`
+  }
 }

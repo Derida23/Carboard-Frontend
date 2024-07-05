@@ -4,7 +4,7 @@ import { LoginSchema } from '~/schemas/auth-schema'
 import type { FormSubmitEvent } from '#ui/types'
 import { useApiAuth } from '~/composables/api/useApiAuth';
 import type {  Notification } from '~/types';
-import type { ApiLoginResponse, LoginResponse } from '~/types/responses/auth-response';
+import type { LoginResponse } from '~/types/responses/auth-response';
 
 definePageMeta({
   layout: 'dashboard',
@@ -18,6 +18,7 @@ useHead({
 type Schema = z.output<typeof LoginSchema>
 
 const { onSign } = useApiAuth()
+const { checkCredentials } = useAuthStore()
 
 const showPassword = ref(false)
 const isOpenForgot = ref(false)
@@ -35,7 +36,7 @@ const notification: Notification = reactive({
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   isLoading.value = true
   await onSign(event.data, {
-    onSuccess: (res) => {
+    onSuccess: async (res) => {
       isLoading.value = false
 
       const token = useCookie<LoginResponse | unknown>(
@@ -50,6 +51,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       )
       
       token.value = res.body.data.access_token
+      await checkCredentials()
+      await navigateTo('/dashboard')
     },
     onError: (error) => {
       isLoading.value = false

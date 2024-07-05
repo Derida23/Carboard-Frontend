@@ -1,4 +1,4 @@
-import type { ApiResponse, ErrorMessage, SuccesMessage } from ".."
+import type { SuccesMessage } from ".."
 
 export interface LoginPayload {
   email: string
