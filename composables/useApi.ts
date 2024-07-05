@@ -10,8 +10,9 @@ export type ApiFetchOptions<T> = UseFetchOptions<T> & {
   onError?: (response: {
     status: number
     body: {
-      code: number
-      messages: string[]
+      statusCode: number
+      message: string
+      error: string
     }
   }) => Promise<void> | void
 }

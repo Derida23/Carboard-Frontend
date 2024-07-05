@@ -3,7 +3,8 @@ import { z } from 'zod'
 import { LoginSchema } from '~/schemas/auth-schema'
 import type { FormSubmitEvent } from '#ui/types'
 import { useApiAuth } from '~/composables/api/useApiAuth';
-import type { ErrorResponse, Notification } from '~/types';
+import type {  Notification } from '~/types';
+import type { ApiLoginResponse, LoginResponse } from '~/types/responses/auth-response';
 
 definePageMeta({
   layout: 'dashboard',
@@ -34,12 +35,25 @@ const notification: Notification = reactive({
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   isLoading.value = true
   await onSign(event.data, {
-    onSuccess: (data: any) => {
+    onSuccess: (res) => {
       isLoading.value = false
-      console.log(data)
+
+      const token = useCookie<LoginResponse | unknown>(
+        'user/token',
+        {
+          sameSite: 'none',
+          secure: true,
+          path: '/',
+          httpOnly: false,
+          expires: new Date(Date.now() + 60 * 60 * 1000),
+        },
+      )
+      
+      token.value = res.body.data.access_token
     },
-    onError: (error: ErrorResponse) => {
+    onError: (error) => {
       isLoading.value = false
+      console.log(error)
       onNotification('error', error.body.error, error.body.message)
     }
   })
