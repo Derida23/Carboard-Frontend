@@ -11,7 +11,7 @@ export default defineNuxtPlugin(async ({ $pinia, ssrContext }) => {
     const { error } = await checkCredentials()
 
     if (error.value) {
-      if(error.value.statusCode === 401) {
+      if (error.value.statusCode === 401) {
         deleteCookie(event, 'user/token')
         sendRedirect(event, '/dashboard/auth/login')
       }
@@ -22,7 +22,7 @@ export default defineNuxtPlugin(async ({ $pinia, ssrContext }) => {
           data: {
             image: '/images/error/401.svg',
             title: 'Access Denied',
-            message: // eslint-disable-next-line max-len
+            message:
                   'We\'re sorry, but it seems you don\'t have the necessary access rights to view this page.',
             button: {
               label: 'Logout',

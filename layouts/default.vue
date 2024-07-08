@@ -2,7 +2,6 @@
 
 <template>
   <div>
-    Layout Landing
     <slot />
   </div>
 </template>

@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { z } from 'zod'
+import type { z } from 'zod'
 import { LoginSchema } from '~/schemas/auth-schema'
 import type { FormSubmitEvent } from '#ui/types'
-import { useApiAuth } from '~/composables/api/useApiAuth';
-import type {  Notification } from '~/types';
-import type { LoginResponse } from '~/types/responses/auth-response';
+import { useApiAuth } from '~/composables/api/useApiAuth'
+import type { Notification } from '~/types'
+import type { LoginResponse } from '~/types/responses/auth-response'
 
 definePageMeta({
-  layout: 'dashboard',
+  // layout: 'dashboard',
   title: 'Login',
 })
 
@@ -25,12 +25,12 @@ const isOpenForgot = ref(false)
 const isLoading = ref(false)
 const state = reactive({
   email: undefined,
-  password: undefined
+  password: undefined,
 })
 const notification: Notification = reactive({
-  status: "warning",
-  title: "Forgot Password?",
-  description: "Please contact admin via email <span class='font-bold'>admin@gmail.com</span> for reset password your account"
+  status: 'warning',
+  title: 'Forgot Password?',
+  description: 'Please contact admin via email <span class=\'font-bold\'>admin@gmail.com</span> for reset password your account',
 })
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
@@ -49,16 +49,15 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           expires: new Date(Date.now() + 60 * 60 * 1000),
         },
       )
-      
+
       token.value = res.body.data.access_token
       await checkCredentials()
       await navigateTo('/dashboard')
     },
     onError: (error) => {
       isLoading.value = false
-      console.log(error)
       onNotification('error', error.body.error, error.body.message)
-    }
+    },
   })
 }
 
@@ -68,7 +67,6 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
   notification.status = type
   notification.title = title
   notification.description = description
-
 }
 </script>
 
@@ -78,7 +76,7 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
       <div class="login-wrapper">
         <section class="login-title">
           <div class="flex-center w-full">
-            <img src="~/assets/images/logo.png" alt="logo" />
+            <img src="~/assets/images/logo.png" alt="logo">
           </div>
           <h1>Welcome Back!</h1>
           <p>Please login to your account</p>
@@ -89,17 +87,23 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
           </UFormGroup>
 
           <UFormGroup label="Password" name="password">
-            <UInput v-model="state.password" :type="showPassword ? 'text' : 'password'" icon="i-heroicons-lock-closed"
-              placeholder="********" :ui="{ icon: { trailing: { pointer: '' } } }" size="lg">
+            <UInput
+              v-model="state.password" :type="showPassword ? 'text' : 'password'" icon="i-heroicons-lock-closed"
+              placeholder="********" :ui="{ icon: { trailing: { pointer: '' } } }" size="lg"
+            >
               <template #trailing>
-                <UButton color="gray" variant="link" :icon="showPassword ? `i-heroicons-eye-slash` : `i-heroicons-eye`"
-                  :padded="false" @click="showPassword = !showPassword" />
+                <UButton
+                  color="gray" variant="link" :icon="showPassword ? `i-heroicons-eye-slash` : `i-heroicons-eye`"
+                  :padded="false" @click="showPassword = !showPassword"
+                />
               </template>
             </UInput>
           </UFormGroup>
 
-          <p class="login-forgot"
-            @click="onNotification('warning', 'Forgot Password?', 'Please contact admin via email <span class=\'font-bold\'>admin@gmail.com</span> for reset password your account')">
+          <p
+            class="login-forgot"
+            @click="onNotification('warning', 'Forgot Password?', 'Please contact admin via email <span class=\'font-bold\'>admin@gmail.com</span> for reset password your account')"
+          >
             Forgot password ?
           </p>
 
@@ -111,19 +115,19 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
     </section>
     <section class="login-bg">
       <div class="login-bg-card">
-        <h1>Simplify <br /> management with <br /> our dashboard</h1>
-        <p>Carboard Vehicles Rental specializes in providing <br />a wide range of rental vehicles</p>
+        <h1>Simplify <br> management with <br> our dashboard</h1>
+        <p>Carboard Vehicles Rental specializes in providing <br>a wide range of rental vehicles</p>
 
         <div class="login-bg-image bg-red-400">
-          <img src="~/assets/images/login-person-1.png" alt="login" />
-          <img src="~/assets/images/login-person-2.png" alt="login" />
+          <img src="~/assets/images/login-person-1.png" alt="login">
+          <img src="~/assets/images/login-person-2.png" alt="login">
         </div>
       </div>
     </section>
   </div>
 
   <ModalNotification v-model="isOpenForgot" :status="notification.status" :title="notification.title">
-    <div v-html="notification.description" /> 
+    <div v-html="notification.description" />
   </ModalNotification>
 </template>
 
@@ -216,7 +220,6 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
     }
 
   }
-
 
 }
 </style>
