@@ -3,6 +3,7 @@ const { toggleSideNav } = useLayoutStore()
 const search = ref(null)
 
 const breakpoint = useBreakpoint()
+const token = useCookie('user/token')
 
 const colorMode = useColorMode()
 const isDark = computed({
@@ -27,7 +28,7 @@ const profileItems = [
     { label: 'Add Account', icon: 'i-heroicons-user-plus', to: '' },
   ],
   [{ label: 'Try Enterprise', icon: 'i-heroicons-globe-alt', to: '', slot: 'special' }],
-  [{ label: 'Logout', to: '/auth/login' }],
+  [{ label: 'Logout', click: () => { token.value = null; window.location.reload() } }],
 ]
 
 const router = useRouter()

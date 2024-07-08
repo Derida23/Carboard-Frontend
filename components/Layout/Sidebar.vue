@@ -14,15 +14,20 @@ const navLinks = reactive([
     { label: 'Dashboard', icon: 'i-heroicons-squares-2x2', to: '/dashboard' },
     { label: 'Statistics', icon: 'i-heroicons-chart-bar', to: '' },
     { label: 'Reports', icon: 'i-heroicons-clipboard-document-list', to: '' },
-    { label: 'Maps', icon: 'i-heroicons-map', to: '' },
-  ],
-  [
-    { label: 'Products', icon: 'i-heroicons-cube', to: '/products' },
-    { label: 'Transactions', icon: 'i-heroicons-banknotes', to: '' },
-    { label: 'Partners', icon: 'i-heroicons-users', to: '' },
-  ],
-  [
     { label: 'Activity Log', icon: 'i-heroicons-clock', to: '' },
+  ],
+  [
+    { label: 'Products', icon: 'i-heroicons-cube', to: '' },
+    { label: 'Transactions', icon: 'i-heroicons-banknotes', to: '' },
+    { label: 'Users', icon: 'i-heroicons-users', to: '' },
+  ],
+  [
+    { label: 'Fuels', icon: 'i-heroicons-beaker', to: '' },
+    { label: 'Marks', icon: 'i-heroicons-cube-transparent', to: '' },
+    { label: 'Transmissions', icon: 'i-heroicons-cog', to: '' },
+    { label: 'Categories', icon: 'i-heroicons-truck', to: '' },
+  ],
+  [
     { label: 'Settings', icon: 'i-heroicons-cog-6-tooth', to: '' },
     { label: 'About', icon: 'i-heroicons-information-circle', to: '' },
   ],
@@ -33,8 +38,8 @@ const navLinks = reactive([
 <template>
   <div
     class="mr-2 lg:mr-4 z-30" :class="{
-      'absolute h-[-moz-available] mb-4': breakpoint.lt('md'),
-      'w-[-moz-available]': !sidenavCollapsed && breakpoint.lt('md'),
+      'absolute h-[-webkit-fill-available] mb-4': breakpoint.lt('md'),
+      'w-[-webkit-fill-available]': !sidenavCollapsed && breakpoint.lt('md'),
       'hidden w-0': sidenavCollapsed && breakpoint.lt('md'),
       'min-w-[12vw]': !sidenavCollapsed && breakpoint.gte('lg'),
       'min-w-[72px]': sidenavCollapsed && breakpoint.gte('lg'),
@@ -43,6 +48,7 @@ const navLinks = reactive([
     <div class="sidenav-container">
       <div class="sidenav-wrapper">
         <div>
+          <!-- Logo -->
           <div class="sidenav-logo">
             <div v-if="(!sidenavCollapsed && breakpoint.gte('lg')) || breakpoint.lt('md')">
               <span class="font-semibold"><span class="text-primary">Carboard</span>App</span>
@@ -51,17 +57,16 @@ const navLinks = reactive([
               <img src="~/assets/images/logo.png" alt="logo">
             </div>
 
-            <div v-if="!sidenavCollapsed && breakpoint.gte('lg')">
-              <span class="text-xs opacity-75">v1.0.0</span>
-            </div>
             <UButton
               v-if="!sidenavCollapsed && breakpoint.lt('md')" color="gray" variant="ghost"
               icon="i-heroicons-x-mark" class="-my-1" @click="sidenavCollapsed = true"
             />
           </div>
 
+          <!-- Menu -->
           <div v-for="(link, index) in navLinks" :key="`nav-${index}`">
             <UDivider class="my-4" />
+            <!-- Full Sidenav -->
             <div v-if="!sidenavCollapsed" class="sidenav-menu">
               <UVerticalNavigation :links="link">
                 <template #icon="{ link: l }">
@@ -71,18 +76,22 @@ const navLinks = reactive([
             </div>
             <div v-else class="flex flex-col">
               <UTooltip
-                v-for="(l, linkId) in link" :key="`nav-${index}-${linkId}`" :text="l.label"
-                :popper="{ placement: 'right' }" class="text-md"
+                v-for="(l, lId) in link"
+                :key="`nav-${index}-${lId}`"
+                :text="l.label"
+                :popper="{ placement: 'right' }"
+                class="text-md"
               >
                 <UButton
                   :to="l.to"
-                  class="sidenav-menu-button"
+                  class="px-3 py-2 my-1 text-gray-500 dark:text-gray-500 hover:text-gray-900 dark:hover:text-white bg-gray-50 dark:bg-gray-900 hover:bg-gray-200/50 dark:hover:bg-gray-800/50"
                   active-class="
                       text-primary-500 dark:text-primary-400
                       hover:!text-primary-500 dark:hover:!text-primary-400
                       bg-primary-300/50 dark:bg-primary-800/50
                       hover:!bg-primary-300/50 dark:hover:!bg-primary-800/50
-                    " variant="ghost"
+                    "
+                  variant="ghost"
                 >
                   <template #leading>
                     <IconCSS :name="l.icon" class="!h-5 !w-5" />
@@ -121,7 +130,7 @@ const navLinks = reactive([
 .sidenav-logo {
   @apply flex;
   @apply flex-row;
-  @apply justify-between;
+  @apply justify-center;
   @apply items-center;
   @apply my-4;
 }
@@ -129,20 +138,6 @@ const navLinks = reactive([
 .sidenav-menu {
   :deep(li) {
     @apply !mb-2;
-  }
-
-  &-button {
-    @apply px-3;
-    @apply py-2;
-    @apply my-1;
-    @apply text-gray-500;
-    @apply dark:text-gray-500;
-    @apply hover:text-gray-900;
-    @apply dark:hover:text-white;
-    @apply bg-gray-50;
-    @apply dark:bg-gray-900;
-    @apply hover:bg-gray-200/50;
-    @apply dark:hover:bg-gray-800/50;
   }
 }
 </style>

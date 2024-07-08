@@ -10,10 +10,7 @@ export default defineNuxtConfig({
   colorMode: {
     preference: 'light',
   },
-  modules: [
-    "@nuxt/ui", 
-    '@pinia/nuxt',
-  ],
+  modules: ["@nuxt/ui", '@pinia/nuxt', "@samk-dev/nuxt-vcalendar", "nuxt-echarts"],
   imports: {
     dirs: ['stores', 'composables/api'],
   },
