@@ -92,7 +92,7 @@ watch(router.currentRoute, () => {
       </div>
     </div>
 
-    <div class="relative py-4 pr-3 lg:pr-4 overflow-auto">
+    <div class="relative pt-5 pb-4 px-1 overflow-auto">
       <slot />
     </div>
   </div>

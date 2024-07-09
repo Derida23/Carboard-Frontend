@@ -22,7 +22,7 @@ const navLinks = reactive([
     { label: 'Users', icon: 'i-heroicons-users', to: '' },
   ],
   [
-    { label: 'Fuels', icon: 'i-heroicons-beaker', to: '' },
+    { label: 'Fuels', icon: 'i-heroicons-beaker', to: '/dashboard/fuels' },
     { label: 'Marks', icon: 'i-heroicons-cube-transparent', to: '' },
     { label: 'Transmissions', icon: 'i-heroicons-cog', to: '' },
     { label: 'Categories', icon: 'i-heroicons-truck', to: '' },
