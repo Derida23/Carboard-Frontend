@@ -107,7 +107,7 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
           </p>
 
           <UButton size="lg" type="submit" block class="!mt-5" :loading="isLoading">
-            Submit
+            Login
           </UButton>
         </UForm>
       </div>

@@ -19,16 +19,16 @@ const imgUrl = computed<string>(() => {
 
 <template>
   <UModal v-model="isOpen">
-    <div class="p-5 text-center">
+    <div class="modal-delete">
       <div class="flex-center">
         <img :src="imgUrl" alt="logo" class="w-36">
       </div>
-      <div class="bg-red-50 p-5 rounded-xl">
+      <div class="modal-delete-body">
         <h3>Confirm Delete</h3>
         <p class="mt-3">
           <slot />
         </p>
-        <div class="grid grid-cols-2 gap-3 px-5 pt-5 pb-3">
+        <div class="modal-delete-action">
           <UButton
             color="red"
             variant="outline"
@@ -53,4 +53,24 @@ const imgUrl = computed<string>(() => {
   </UModal>
 </template>
 
-<style scoped lang="postcss"></style>
+<style scoped lang="postcss">
+  .modal-delete {
+    @apply p-5;
+    @apply text-center
+
+    &-body {
+      @apply bg-red-50;
+      @apply p-5;
+      @apply rounded-xl;
+    }
+
+    &-action {
+      @apply grid;
+      @apply grid-cols-2;
+      @apply gap-3;
+      @apply px-5;
+      @apply pt-5;
+      @apply pb-3;
+    }
+  }
+</style>

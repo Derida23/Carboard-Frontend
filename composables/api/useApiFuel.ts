@@ -1,10 +1,11 @@
 import { API_ENDPOINT } from '~/constants/endpoint'
+import type { ApiUomListResponse, ApiUomResponse, UomPayload } from '~/types/responses/uom-response'
 
 export function useApiFuel() {
   const findAll = async (
-    options?: Partial<ApiFetchOptions<any>>,
+    options?: Partial<ApiFetchOptions<ApiUomListResponse>>,
   ) => {
-    return await useApi<any>(API_ENDPOINT.UOM.FUEL, {
+    return await useApi<ApiUomListResponse>(API_ENDPOINT.UOM.FUEL, {
       method: 'GET',
       ...options,
       watch: false,
@@ -12,10 +13,10 @@ export function useApiFuel() {
   }
 
   const create = async (
-    payload: any,
-    options?: Partial<ApiFetchOptions<any>>,
+    payload: UomPayload,
+    options?: Partial<ApiFetchOptions<ApiUomResponse>>,
   ) => {
-    return await useApi<any>(API_ENDPOINT.UOM.FUEL, {
+    return await useApi<ApiUomResponse>(API_ENDPOINT.UOM.FUEL, {
       method: 'POST',
       body: payload,
       ...options,
@@ -24,10 +25,11 @@ export function useApiFuel() {
   }
 
   const update = async (
-    payload: any,
-    options?: Partial<ApiFetchOptions<any>>,
+    id: number,
+    payload: UomPayload,
+    options?: Partial<ApiFetchOptions<ApiUomResponse>>,
   ) => {
-    return await useApi<any>(`${API_ENDPOINT.UOM.FUEL}/${payload.id}`, {
+    return await useApi<ApiUomResponse>(`${API_ENDPOINT.UOM.FUEL}/${id}`, {
       method: 'PATCH',
       body: payload,
       ...options,
@@ -36,10 +38,10 @@ export function useApiFuel() {
   }
 
   const remove = async (
-    id: any,
-    options?: Partial<ApiFetchOptions<any>>,
+    id: number,
+    options?: Partial<ApiFetchOptions<ApiUomResponse>>,
   ) => {
-    return await useApi<any>(`${API_ENDPOINT.UOM.FUEL}/${id}`, {
+    return await useApi<ApiUomResponse>(`${API_ENDPOINT.UOM.FUEL}/${id}`, {
       method: 'DELETE',
       ...options,
       watch: false,

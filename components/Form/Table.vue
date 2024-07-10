@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { UomData } from '~/types/responses/uom-response'
+
 interface TableColumn {
   label: string
   key: string
@@ -10,14 +12,14 @@ const props = defineProps({
     required: true,
   },
   rows: {
-    type: Array,
+    type: Array as PropType<UomData[] | undefined>,
     required: true,
   },
 })
 
 const emits = defineEmits<{
-  (e: 'delete', row: any): void
-  (e: 'edit', row: any): void
+  (e: 'delete', row: UomData): void
+  (e: 'edit', row: UomData): void
 }>()
 </script>
 

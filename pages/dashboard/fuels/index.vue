@@ -6,7 +6,7 @@ import { UomSchema } from '~/schemas/uom-schema'
 import type { FormSubmitEvent } from '#ui/types'
 import type { Notification } from '~/types'
 
-type Schema = z.infer<typeof UomSchema>
+type Schema = z.output<typeof UomSchema>
 
 definePageMeta({
   layout: 'dashboard',
@@ -29,9 +29,11 @@ const range = ref({
 })
 
 // Modal Function
-const isOpenDelete = ref(false)
-const isOpenNotification = ref(false)
-const isOpen = ref(false)
+const modal = reactive({
+  delete: false,
+  notification: false,
+  form: false,
+})
 
 const title = ref('Create')
 
@@ -50,23 +52,23 @@ function onOpenModal(
   fuelId.value = row.id
 
   if (mode !== 'Delete') {
-    isOpen.value = true
+    modal.form = true
     title.value = mode
 
     payload.name = row.name
     payload.description = row.description
   }
   else {
-    isOpenDelete.value = true
+    modal.delete = true
   }
 }
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   loading.value = true
-  isOpen.value = false
+  modal.form = false
 
   if (fuelId.value) {
-    await update({ id: fuelId.value, ...event.data }, {
+    await update(fuelId.value, event.data, {
       onSuccess: () => {
         loading.value = false
         onNotification('success', 'Great!', 'Your data has been successfully update.')
@@ -94,19 +96,22 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 }
 
 async function onRemove() {
-  isOpenDelete.value = false
+  modal.delete = false
   loading.value = true
-  await remove(fuelId.value, {
-    onSuccess: () => {
-      loading.value = false
-      onNotification('success', 'Great!', 'Your data has been successfully deleted.')
-      refresh()
-    },
-    onError: (error) => {
-      loading.value = false
-      onNotification('error', 'Error', error.body.message)
-    },
-  })
+
+  if (fuelId.value) {
+    await remove(fuelId.value, {
+      onSuccess: () => {
+        loading.value = false
+        onNotification('success', 'Great!', 'Your data has been successfully deleted.')
+        refresh()
+      },
+      onError: (error) => {
+        loading.value = false
+        onNotification('error', 'Error', error.body.message)
+      },
+    })
+  }
 }
 
 const notification: Notification = reactive({
@@ -116,7 +121,7 @@ const notification: Notification = reactive({
 })
 
 function onNotification(type: 'warning' | 'error' | 'success', title: string, description: string) {
-  isOpenNotification.value = true
+  modal.notification = true
 
   notification.status = type
   notification.title = title
@@ -127,7 +132,6 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
 <template>
   <div class="fuels">
     <UBreadcrumb :links="FuelLinks" />
-    <pre>{{ fuelId }}</pre>
     <UCard>
       <div class="fuels-filter ">
         <UInput
@@ -162,7 +166,7 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
     <UCard>
       <FormTable
         :columns="UomColumns"
-        :rows="fuels.data"
+        :rows="fuels?.data"
         :loading="status === 'pending'"
         @delete="onOpenModal('Delete', $event)"
         @edit="onOpenModal('Update', $event)"
@@ -170,25 +174,25 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
     </UCard>
 
     <ModalDelete
-      v-model="isOpenDelete"
+      v-model="modal.delete"
       :loading
       @submit="onRemove"
-      @close="isOpenDelete = false"
+      @close="modal.delete = false"
     >
       Are you sure? you would like to delete this fuel from the database? this action can't be undone
     </ModalDelete>
 
     <ModalUom
-      v-model="isOpen"
+      v-model="modal.form"
       v-model:payload="payload"
       :title
       :validation-schema="UomSchema"
       :loading
       @submit="onSubmit"
-      @close="isOpen = false"
+      @close="modal.form = false"
     />
 
-    <ModalNotification v-model="isOpenNotification" :status="notification.status" :title="notification.title">
+    <ModalNotification v-model="modal.notification" :status="notification.status" :title="notification.title">
       <div v-html="notification.description" />
     </ModalNotification>
   </div>
