@@ -7,6 +7,7 @@ definePageMeta({
 useHead({
   title: 'Fuels',
 })
+
 const columns = [{
   key: 'id',
   label: 'ID',
@@ -70,6 +71,25 @@ const range = ref({
   start: new Date(),
   end: new Date(),
 })
+
+const isDeleteOpen = ref(false)
+const isOpen = ref(false)
+const status = ref('Create')
+
+const dataUpdate = reactive({
+  id: null,
+  name: null,
+  description: null,
+})
+
+function onModal(title: string, row: any = null) {
+  isOpen.value = true
+  status.value = title
+
+  dataUpdate.id = row?.id
+  dataUpdate.name = row?.name
+  dataUpdate.description = row?.description
+}
 </script>
 
 <template>
@@ -100,6 +120,7 @@ const range = ref({
           icon="i-heroicons-plus"
           block
           size="lg"
+          @click="onModal('Create')"
         >
           Add Fuels
         </UButton>
@@ -107,8 +128,14 @@ const range = ref({
     </UCard>
 
     <UCard>
-      <FormTable :columns :rows="people" />
+      <FormTable :columns :rows="people" @delete="isDeleteOpen = true" @edit="onModal('Update', $event)" />
     </UCard>
+
+    <ModalDelete v-model="isDeleteOpen">
+      Are you sure? you would like to delete this fuel from the database? this action can't be undone
+    </ModalDelete>
+
+    <ModalFuel v-model="isOpen" :title="status" :data-update="dataUpdate" />
   </div>
 </template>
 

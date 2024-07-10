@@ -14,6 +14,8 @@ const props = defineProps({
     required: true,
   },
 })
+
+const emit = defineEmits(['delete', 'edit'])
 </script>
 
 <template>
@@ -28,12 +30,12 @@ const props = defineProps({
         {{ column.label }}
       </p>
     </template>
-    <template #actions-data>
+    <template #actions-data="{ row }">
       <div class="flex flex-row gap-x-2 justify-center">
-        <UButton color="red" variant="outline" icon="i-heroicons-trash">
+        <UButton color="red" variant="outline" icon="i-heroicons-trash" @click="emit('delete')">
           Delete
         </UButton>
-        <UButton icon="i-heroicons-pencil-square">
+        <UButton icon="i-heroicons-pencil-square" @click="emit('edit', row)">
           Edit
         </UButton>
       </div>

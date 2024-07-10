@@ -7,7 +7,6 @@ import type { Notification } from '~/types'
 import type { LoginResponse } from '~/types/responses/auth-response'
 
 definePageMeta({
-  // layout: 'dashboard',
   title: 'Login',
 })
 
