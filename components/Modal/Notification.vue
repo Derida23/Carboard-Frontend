@@ -14,6 +14,18 @@ const isOpen = defineModel('isOpen')
 const imgUrl = computed<string>(() => {
   return new URL(`/assets/images/notification/${props.status}.png`, import.meta.url).href
 })
+
+const background = computed(() => {
+  if (props.status === 'success') {
+    return 'bg-blue-50'
+  }
+
+  if (props.status === 'error') {
+    return 'bg-red-50'
+  }
+
+  return `bg-orange-50`
+})
 </script>
 
 <template>
@@ -22,7 +34,7 @@ const imgUrl = computed<string>(() => {
       <div class="flex-center">
         <img :src="imgUrl" alt="logo" class="w-28">
       </div>
-      <div class="bg-orange-50 p-5 rounded-xl">
+      <div class=" p-5 rounded-xl" :class="[background]">
         <h3>{{ title }}</h3>
         <p class="mt-3">
           <slot />

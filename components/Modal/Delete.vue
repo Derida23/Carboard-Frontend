@@ -1,13 +1,20 @@
 <script setup lang="ts">
-const emits = defineEmits(['update:modelValue'])
+const props = defineProps({
+  loading: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+const emits = defineEmits<{
+  (e: 'close'): void
+  (e: 'submit'): void
+}>()
 const isOpen = defineModel('isOpen')
 
 const imgUrl = computed<string>(() => {
   return new URL(`/assets/images/notification/trash.png`, import.meta.url).href
 })
-function close() {
-  emits('update:modelValue', false)
-}
 </script>
 
 <template>
@@ -27,7 +34,7 @@ function close() {
             variant="outline"
             size="lg"
             block
-            @click="close"
+            @click="emits('close')"
           >
             Cancel
           </UButton>
@@ -35,7 +42,8 @@ function close() {
             color="red"
             size="lg"
             block
-            @click="close"
+            :loading="props.loading"
+            @click="emits('submit')"
           >
             Delete
           </UButton>

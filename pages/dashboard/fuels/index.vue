@@ -1,4 +1,13 @@
 <script setup lang="ts">
+import type { z } from 'zod'
+import { UomColumns } from '~/constants/table'
+import { FuelLinks } from '~/constants/breadcrumb'
+import { UomSchema } from '~/schemas/uom-schema'
+import type { FormSubmitEvent } from '#ui/types'
+import type { Notification } from '~/types'
+
+type Schema = z.infer<typeof UomSchema>
+
 definePageMeta({
   layout: 'dashboard',
   title: 'Fuels',
@@ -8,93 +17,117 @@ useHead({
   title: 'Fuels',
 })
 
-const columns = [{
-  key: 'id',
-  label: 'ID',
-}, {
-  key: 'name',
-  label: 'Name',
-}, {
-  key: 'description',
-  label: 'Description',
-}, {
-  key: 'created',
-  label: 'Created',
-}, {
-  key: 'actions',
-  label: 'Actions',
-}]
+// Get Data
+const { findAll, create, update, remove } = useApiFuel()
+const { data: fuels, status, refresh } = await findAll({})
 
-const people = [{
-  id: 1,
-  name: 'Lindsay Walton',
-  description: 'Lorem ipsum is placeholder text commonly used in the graphic',
-  created: '20 January 2024',
-  actions: 'Member',
-}, {
-  id: 2,
-  name: 'Courtney Henry',
-  description: 'Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.',
-  created: '21 January 2024',
-  actions: 'Admin',
-}, {
-  id: 3,
-  name: 'Tom Cook',
-  description: 'Lorem ipsum is placeholder text commonly used in the graphic',
-  created: '22 January 2024',
-  actions: 'Member',
-}, {
-  id: 4,
-  name: 'Whitney Francis',
-  description: 'Lorem ipsum is placeholder text commonly used in the graphic',
-  created: '23 January 2024',
-  actions: 'Admin',
-}, {
-  id: 5,
-  name: 'Leonard Krasner',
-  description: 'Lorem ipsum is placeholder text commonly used in the graphic',
-  created: '24 January 2024',
-  actions: 'Owner',
-}]
-
-const links = [{
-  label: 'Dashboard',
-  icon: 'i-heroicons-home',
-  to: '/dashboard',
-}, {
-  label: 'Fuels',
-  icon: 'i-heroicons-beaker',
-}]
-
-const search = ref(null)
+// Filter Table
+const search = ref(undefined)
 const range = ref({
   start: new Date(),
   end: new Date(),
 })
 
-const isDeleteOpen = ref(false)
+// Modal Function
+const isOpenDelete = ref(false)
+const isOpenNotification = ref(false)
 const isOpen = ref(false)
-const status = ref('Create')
 
-const dataUpdate = reactive({
-  id: null,
-  name: null,
-  description: null,
+const title = ref('Create')
+
+const payload = reactive<{ name?: string, description?: string }>({
+  name: undefined,
+  description: undefined,
 })
 
-function onModal(title: string, row: any = null) {
-  isOpen.value = true
-  status.value = title
+// Update and Create Function
+const fuelId = ref<number | undefined>(undefined)
+const loading = ref(false)
+function onOpenModal(
+  mode: string,
+  row: { id?: number, name?: string, description?: string } = { id: undefined, name: undefined, description: undefined },
+) {
+  fuelId.value = row.id
 
-  dataUpdate.id = row?.id
-  dataUpdate.name = row?.name
-  dataUpdate.description = row?.description
+  if (mode !== 'Delete') {
+    isOpen.value = true
+    title.value = mode
+
+    payload.name = row.name
+    payload.description = row.description
+  }
+  else {
+    isOpenDelete.value = true
+  }
+}
+
+async function onSubmit(event: FormSubmitEvent<Schema>) {
+  loading.value = true
+  isOpen.value = false
+
+  if (fuelId.value) {
+    await update({ id: fuelId.value, ...event.data }, {
+      onSuccess: () => {
+        loading.value = false
+        onNotification('success', 'Great!', 'Your data has been successfully update.')
+        refresh()
+      },
+      onError: (error) => {
+        loading.value = false
+        onNotification('error', 'Error', error.body.message)
+      },
+    })
+  }
+  else {
+    await create(event.data, {
+      onSuccess: () => {
+        loading.value = false
+        onNotification('success', 'Great!', 'Your data has been successfully created.')
+        refresh()
+      },
+      onError: (error) => {
+        loading.value = false
+        onNotification('error', 'Error', error.body.message)
+      },
+    })
+  }
+}
+
+async function onRemove() {
+  isOpenDelete.value = false
+  loading.value = true
+  await remove(fuelId.value, {
+    onSuccess: () => {
+      loading.value = false
+      onNotification('success', 'Great!', 'Your data has been successfully deleted.')
+      refresh()
+    },
+    onError: (error) => {
+      loading.value = false
+      onNotification('error', 'Error', error.body.message)
+    },
+  })
+}
+
+const notification: Notification = reactive({
+  status: 'success',
+  title: 'Forgot Password?',
+  description: 'Lorem ipsum',
+})
+
+function onNotification(type: 'warning' | 'error' | 'success', title: string, description: string) {
+  isOpenNotification.value = true
+
+  notification.status = type
+  notification.title = title
+  notification.description = description
 }
 </script>
 
 <template>
   <div class="fuels">
-    <UBreadcrumb :links="links" />
+    <UBreadcrumb :links="FuelLinks" />
+    <pre>{{ fuelId }}</pre>
     <UCard>
       <div class="fuels-filter ">
         <UInput
@@ -120,22 +153,44 @@ function onModal(title: string, row: any = null) {
           icon="i-heroicons-plus"
           block
           size="lg"
-          @click="onModal('Create')"
+          @click="onOpenModal('Create')"
         >
           Add Fuels
         </UButton>
       </div>
     </UCard>
-
     <UCard>
-      <FormTable :columns :rows="people" @delete="isDeleteOpen = true" @edit="onModal('Update', $event)" />
+      <FormTable
+        :columns="UomColumns"
+        :rows="fuels.data"
+        :loading="status === 'pending'"
+        @delete="onOpenModal('Delete', $event)"
+        @edit="onOpenModal('Update', $event)"
+      />
     </UCard>
 
-    <ModalDelete v-model="isDeleteOpen">
+    <ModalDelete
+      v-model="isOpenDelete"
+      :loading
+      @submit="onRemove"
+      @close="isOpenDelete = false"
+    >
       Are you sure? you would like to delete this fuel from the database? this action can't be undone
     </ModalDelete>
 
-    <ModalFuel v-model="isOpen" :title="status" :data-update="dataUpdate" />
+    <ModalUom
+      v-model="isOpen"
+      v-model:payload="payload"
+      :title
+      :validation-schema="UomSchema"
+      :loading
+      @submit="onSubmit"
+      @close="isOpen = false"
+    />
+
+    <ModalNotification v-model="isOpenNotification" :status="notification.status" :title="notification.title">
+      <div v-html="notification.description" />
+    </ModalNotification>
   </div>
 </template>
 

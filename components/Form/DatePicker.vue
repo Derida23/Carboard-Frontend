@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const dayjs = useDayjs()
 const range = defineModel('range', { default: { start: new Date(), end: new Date() } })
+const rangeValue = ref('')
 
 const attrs = ref([
   {
@@ -23,8 +24,10 @@ const isDark = computed({
   },
 })
 
-const rangeValue = computed<string>(() => {
-  return `${dayjs(range.value.start).format('DD MMMM YYYY')} - ${dayjs(range.value.end).format('DD MMMM YYYY')}`
+watch(range, (value) => {
+  if (value) {
+    rangeValue.value = `${dayjs(range.value.start).format('DD MMMM YYYY')} - ${dayjs(range.value.end).format('DD MMMM YYYY')}`
+  }
 })
 </script>
 

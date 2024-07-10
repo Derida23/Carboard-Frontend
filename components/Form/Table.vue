@@ -15,14 +15,17 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['delete', 'edit'])
+const emits = defineEmits<{
+  (e: 'delete', row: any): void
+  (e: 'edit', row: any): void
+}>()
 </script>
 
 <template>
   <UTable
     :columns="props.columns"
     :rows
-    class="w-full"
+    class="uom-table"
     :ui="{ td: { base: 'max-w-[0] truncate' } }"
   >
     <template #actions-header="{ column }">
@@ -30,12 +33,18 @@ const emit = defineEmits(['delete', 'edit'])
         {{ column.label }}
       </p>
     </template>
+    <template #no-data="{ index }">
+      {{ index + 1 }}
+    </template>
+    <template #created_at-data="{ row }">
+      {{ $dayjs(row.created_at).format("DD MMMM YYYY") }}
+    </template>
     <template #actions-data="{ row }">
-      <div class="flex flex-row gap-x-2 justify-center">
-        <UButton color="red" variant="outline" icon="i-heroicons-trash" @click="emit('delete')">
+      <div class="uom-table-actions">
+        <UButton color="red" variant="outline" icon="i-heroicons-trash" @click="emits('delete', row)">
           Delete
         </UButton>
-        <UButton icon="i-heroicons-pencil-square" @click="emit('edit', row)">
+        <UButton icon="i-heroicons-pencil-square" @click="emits('edit', row)">
           Edit
         </UButton>
       </div>
@@ -43,4 +52,15 @@ const emit = defineEmits(['delete', 'edit'])
   </UTable>
 </template>
 
-<style scoped lang="postcss"></style>
+<style scoped lang="postcss">
+.uom-table {
+  @apply w-full;
+
+  &-actions {
+    @apply flex;
+    @apply flex-row;
+    @apply gap-x-2;
+    @apply justify-center;
+  }
+}
+</style>
