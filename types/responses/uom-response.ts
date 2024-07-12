@@ -1,4 +1,4 @@
-import type { SuccesMessage } from '..'
+import type { SuccesMessage, SuccesMessageList } from '..'
 
 export interface UomData {
   id: number
@@ -13,5 +13,5 @@ export interface UomPayload {
   description: string
 }
 
-export type ApiUomListResponse = SuccesMessage<UomData[]>
+export type ApiUomListResponse = SuccesMessageList<UomData[]>
 export type ApiUomResponse = SuccesMessage<UomData>

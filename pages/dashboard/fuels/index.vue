@@ -17,16 +17,23 @@ useHead({
   title: 'Fuels',
 })
 
+// Filter Table
+const search = ref('')
+const params = ref({
+  name: '',
+  start_date: undefined,
+  end_date: undefined,
+  page: 1,
+})
+
+const debounceSearch = useDebounce(search, 500)
+watch(debounceSearch, (value) => {
+  params.value.name = value
+})
+
 // Get Data
 const { findAll, create, update, remove } = useApiFuel()
-const { data: fuels, status, refresh } = await findAll({})
-
-// Filter Table
-const search = ref(undefined)
-const range = ref({
-  start: new Date(),
-  end: new Date(),
-})
+const { data: fuels, status, refresh } = await findAll(params)
 
 // Modal Function
 const modal = reactive({
@@ -36,7 +43,6 @@ const modal = reactive({
 })
 
 const title = ref('Create')
-
 const payload = reactive<{ name?: string, description?: string }>({
   name: undefined,
   description: undefined,
@@ -115,7 +121,7 @@ async function onRemove() {
 }
 
 const notification: Notification = reactive({
-  status: 'success',
+  status: 'warning',
   title: 'Forgot Password?',
   description: 'Lorem ipsum',
 })
@@ -142,16 +148,12 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
           size="lg"
         />
         <div class="fuels-filter-date">
-          <div class="col-span-3">
-            <FormDatePicker v-model="range" />
+          <div class="col-span-4">
+            <FormDatePicker
+              v-model:start="params.start_date"
+              v-model:end="params.end_date"
+            />
           </div>
-          <UButton
-            icon="i-heroicons-adjustments-horizontal"
-            variant="outline"
-            block
-          >
-            Filter
-          </UButton>
         </div>
         <UButton
           icon="i-heroicons-plus"
@@ -165,9 +167,11 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
     </UCard>
     <UCard>
       <FormTable
+        v-model:page="params.page"
         :columns="UomColumns"
         :rows="fuels?.data"
         :loading="status === 'pending'"
+        :total="fuels?.meta.total"
         @delete="onOpenModal('Delete', $event)"
         @edit="onOpenModal('Update', $event)"
       />
@@ -192,7 +196,11 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
       @close="modal.form = false"
     />
 
-    <ModalNotification v-model="modal.notification" :status="notification.status" :title="notification.title">
+    <ModalNotification
+      v-model="modal.notification"
+      :status="notification.status"
+      :title="notification.title"
+    >
       <div v-html="notification.description" />
     </ModalNotification>
   </div>

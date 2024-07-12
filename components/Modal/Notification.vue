@@ -17,14 +17,14 @@ const imgUrl = computed<string>(() => {
 
 const background = computed(() => {
   if (props.status === 'success') {
-    return 'bg-blue-50'
+    return 'bg-blue-50 dark:bg-blue-950'
   }
 
   if (props.status === 'error') {
-    return 'bg-red-50'
+    return 'bg-red-50 dark:bg-red-950'
   }
 
-  return `bg-orange-50`
+  return `bg-orange-50 dark:bg-orange-500`
 })
 </script>
 

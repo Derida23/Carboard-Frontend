@@ -3,12 +3,14 @@ import type { ApiUomListResponse, ApiUomResponse, UomPayload } from '~/types/res
 
 export function useApiFuel() {
   const findAll = async (
+    params: any,
     options?: Partial<ApiFetchOptions<ApiUomListResponse>>,
   ) => {
     return await useApi<ApiUomListResponse>(API_ENDPOINT.UOM.FUEL, {
       method: 'GET',
+      params,
       ...options,
-      watch: false,
+      // watch: false,
     })
   }
 

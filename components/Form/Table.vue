@@ -15,43 +15,57 @@ const props = defineProps({
     type: Array as PropType<UomData[] | undefined>,
     required: true,
   },
+  total: {
+    type: Number,
+    default: 100,
+  },
 })
 
 const emits = defineEmits<{
   (e: 'delete', row: UomData): void
   (e: 'edit', row: UomData): void
 }>()
+
+const page = defineModel('page', {
+  default: 1,
+})
 </script>
 
 <template>
-  <UTable
-    :columns="props.columns"
-    :rows
-    class="uom-table"
-    :ui="{ td: { base: 'max-w-[0] truncate' } }"
-  >
-    <template #actions-header="{ column }">
-      <p class="text-center">
-        {{ column.label }}
-      </p>
-    </template>
-    <template #no-data="{ index }">
-      {{ index + 1 }}
-    </template>
-    <template #created_at-data="{ row }">
-      {{ $dayjs(row.created_at).format("DD MMMM YYYY") }}
-    </template>
-    <template #actions-data="{ row }">
-      <div class="uom-table-actions">
-        <UButton color="red" variant="outline" icon="i-heroicons-trash" @click="emits('delete', row)">
-          Delete
-        </UButton>
-        <UButton icon="i-heroicons-pencil-square" @click="emits('edit', row)">
-          Edit
-        </UButton>
-      </div>
-    </template>
-  </UTable>
+  <div>
+    <UTable
+      :columns="props.columns"
+      :rows
+      class="uom-table"
+      :ui="{ td: { base: 'max-w-[0] truncate' } }"
+    >
+      <template #actions-header="{ column }">
+        <p class="text-center">
+          {{ column.label }}
+        </p>
+      </template>
+      <template #no-data="{ index }">
+        {{ index + 1 }}
+      </template>
+      <template #created_at-data="{ row }">
+        {{ $dayjs(row.created_at).format("DD MMMM YYYY - HH:mm:ss") }}
+      </template>
+      <template #actions-data="{ row }">
+        <div class="uom-table-actions">
+          <UButton color="red" variant="outline" icon="i-heroicons-trash" @click="emits('delete', row)">
+            Delete
+          </UButton>
+          <UButton icon="i-heroicons-pencil-square" @click="emits('edit', row)">
+            Edit
+          </UButton>
+        </div>
+      </template>
+    </UTable>
+
+    <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
+      <UPagination v-model="page" :page-count="10" :total="total" />
+    </div>
+  </div>
 </template>
 
 <style scoped lang="postcss">

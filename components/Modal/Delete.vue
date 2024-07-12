@@ -56,10 +56,11 @@ const imgUrl = computed<string>(() => {
 <style scoped lang="postcss">
   .modal-delete {
     @apply p-5;
-    @apply text-center
+    @apply text-center;
 
     &-body {
       @apply bg-red-50;
+      @apply dark:bg-red-950;
       @apply p-5;
       @apply rounded-xl;
     }
