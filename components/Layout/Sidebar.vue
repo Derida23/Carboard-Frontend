@@ -23,9 +23,9 @@ const navLinks = reactive([
   ],
   [
     { label: 'Fuels', icon: 'i-heroicons-beaker', to: '/dashboard/fuels' },
-    { label: 'Marks', icon: 'i-heroicons-cube-transparent', to: '' },
-    { label: 'Transmissions', icon: 'i-heroicons-cog', to: '' },
-    { label: 'Categories', icon: 'i-heroicons-truck', to: '' },
+    { label: 'Marks', icon: 'i-heroicons-cube-transparent', to: '/dashboard/marks' },
+    { label: 'Transmissions', icon: 'i-heroicons-cog', to: '/dashboard/transmissions' },
+    { label: 'Categories', icon: 'i-heroicons-truck', to: '/dashboard/categories' },
   ],
   [
     { label: 'Settings', icon: 'i-heroicons-cog-6-tooth', to: '' },

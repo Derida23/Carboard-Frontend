@@ -8,12 +8,12 @@ interface params {
   page?: number
 }
 
-export function useApiFuel() {
+export function useApiCategory() {
   const findAll = async (
     params: params,
     options?: Partial<ApiFetchOptions<ApiUomListResponse>>,
   ) => {
-    return await useApi<ApiUomListResponse>(API_ENDPOINT.UOM.FUEL, {
+    return await useApi<ApiUomListResponse>(API_ENDPOINT.UOM.TYPE, {
       method: 'GET',
       params,
       ...options,
@@ -25,7 +25,7 @@ export function useApiFuel() {
     payload: UomPayload,
     options?: Partial<ApiFetchOptions<ApiUomResponse>>,
   ) => {
-    return await useApi<ApiUomResponse>(API_ENDPOINT.UOM.FUEL, {
+    return await useApi<ApiUomResponse>(API_ENDPOINT.UOM.TYPE, {
       method: 'POST',
       body: payload,
       ...options,
@@ -38,7 +38,7 @@ export function useApiFuel() {
     payload: UomPayload,
     options?: Partial<ApiFetchOptions<ApiUomResponse>>,
   ) => {
-    return await useApi<ApiUomResponse>(`${API_ENDPOINT.UOM.FUEL}/${id}`, {
+    return await useApi<ApiUomResponse>(`${API_ENDPOINT.UOM.TYPE}/${id}`, {
       method: 'PATCH',
       body: payload,
       ...options,
@@ -50,7 +50,7 @@ export function useApiFuel() {
     id: number,
     options?: Partial<ApiFetchOptions<ApiUomResponse>>,
   ) => {
-    return await useApi<ApiUomResponse>(`${API_ENDPOINT.UOM.FUEL}/${id}`, {
+    return await useApi<ApiUomResponse>(`${API_ENDPOINT.UOM.TYPE}/${id}`, {
       method: 'DELETE',
       ...options,
       watch: false,

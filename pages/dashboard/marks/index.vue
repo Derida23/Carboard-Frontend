@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { z } from 'zod'
 import { UomColumns } from '~/constants/table'
-import { FuelLinks } from '~/constants/breadcrumb'
+import { MarkLinks } from '~/constants/breadcrumb'
 import { UomSchema } from '~/schemas/uom-schema'
 import type { FormSubmitEvent } from '#ui/types'
 import type { Notification } from '~/types'
@@ -10,11 +10,11 @@ type Schema = z.output<typeof UomSchema>
 
 definePageMeta({
   layout: 'dashboard',
-  title: 'Fuels',
+  title: 'Marks',
 })
 
 useHead({
-  title: 'Fuels',
+  title: 'Marks',
 })
 
 // Filter Table
@@ -32,8 +32,8 @@ watch(debounceSearch, (value) => {
 })
 
 // Get Data
-const { findAll, create, update, remove } = useApiFuel()
-const { data: fuels, status, refresh } = await findAll(params.value)
+const { findAll, create, update, remove } = useApiMark()
+const { data: marks, status, refresh } = await findAll(params.value)
 
 // Modal Function
 const modal = reactive({
@@ -49,13 +49,13 @@ const payload = reactive<{ name?: string, description?: string }>({
 })
 
 // Update and Create Function
-const fuelId = ref<number | undefined>(undefined)
+const markId = ref<number | undefined>(undefined)
 const loading = ref(false)
 function onOpenModal(
   mode: string,
   row: { id?: number, name?: string, description?: string } = { id: undefined, name: undefined, description: undefined },
 ) {
-  fuelId.value = row.id
+  markId.value = row.id
 
   if (mode !== 'Delete') {
     modal.form = true
@@ -73,8 +73,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   loading.value = true
   modal.form = false
 
-  if (fuelId.value) {
-    await update(fuelId.value, event.data, {
+  if (markId.value) {
+    await update(markId.value, event.data, {
       onSuccess: () => {
         loading.value = false
         onNotification('success', 'Great!', 'Your data has been successfully update.')
@@ -105,8 +105,8 @@ async function onRemove() {
   modal.delete = false
   loading.value = true
 
-  if (fuelId.value) {
-    await remove(fuelId.value, {
+  if (markId.value) {
+    await remove(markId.value, {
       onSuccess: () => {
         loading.value = false
         onNotification('success', 'Great!', 'Your data has been successfully deleted.')
@@ -136,78 +136,48 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
 </script>
 
 <template>
-  <div class="fuels">
-    <UBreadcrumb :links="FuelLinks" />
+  <div class="marks">
+    <UBreadcrumb :links="MarkLinks" />
     <UCard>
-      <div class="fuels-filter ">
+      <div class="marks-filter ">
         <UInput
-          v-model="search"
-          class="col-span-3"
-          icon="i-heroicons-magnifying-glass"
-          placeholder="Search..."
+          v-model="search" class="col-span-3" icon="i-heroicons-magnifying-glass" placeholder="Search..."
           size="lg"
         />
-        <div class="fuels-filter-date">
+        <div class="marks-filter-date">
           <div class="col-span-4">
-            <FormDatePicker
-              v-model:start="params.start_date"
-              v-model:end="params.end_date"
-            />
+            <FormDatePicker v-model:start="params.start_date" v-model:end="params.end_date" />
           </div>
         </div>
-        <UButton
-          icon="i-heroicons-plus"
-          block
-          size="lg"
-          @click="onOpenModal('Create')"
-        >
-          Add Fuels
+        <UButton icon="i-heroicons-plus" block size="lg" @click="onOpenModal('Create')">
+          Add Marks
         </UButton>
       </div>
     </UCard>
     <UCard>
       <FormTable
-        v-model:page="params.page"
-        :columns="UomColumns"
-        :rows="fuels?.data"
-        :loading="status === 'pending'"
-        :total="fuels?.meta.total"
-        @delete="onOpenModal('Delete', $event)"
-        @edit="onOpenModal('Update', $event)"
+        v-model:page="params.page" :columns="UomColumns" :rows="marks?.data" :loading="status === 'pending'"
+        :total="marks?.meta.total" @delete="onOpenModal('Delete', $event)" @edit="onOpenModal('Update', $event)"
       />
     </UCard>
 
-    <ModalDelete
-      v-model="modal.delete"
-      :loading
-      @submit="onRemove"
-      @close="modal.delete = false"
-    >
-      Are you sure? you would like to delete this fuel from the database? this action can't be undone
+    <ModalDelete v-model="modal.delete" :loading @submit="onRemove" @close="modal.delete = false">
+      Are you sure? you would like to delete this mark from the database? this action can't be undone
     </ModalDelete>
 
     <ModalUom
-      v-model="modal.form"
-      v-model:payload="payload"
-      :title
-      :validation-schema="UomSchema"
-      :loading
-      @submit="onSubmit"
-      @close="modal.form = false"
+      v-model="modal.form" v-model:payload="payload" :title :validation-schema="UomSchema" :loading
+      @submit="onSubmit" @close="modal.form = false"
     />
 
-    <ModalNotification
-      v-model="modal.notification"
-      :status="notification.status"
-      :title="notification.title"
-    >
+    <ModalNotification v-model="modal.notification" :status="notification.status" :title="notification.title">
       <div v-html="notification.description" />
     </ModalNotification>
   </div>
 </template>
 
 <style scoped lang="postcss">
-.fuels {
+.marks {
   @apply flex;
   @apply flex-col;
   @apply gap-y-5;
