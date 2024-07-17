@@ -17,7 +17,11 @@ export function useApiFuel() {
       method: 'GET',
       params,
       ...options,
-      // watch: false,
+      onSuccess: ({ body }) => {
+        body.data.forEach((uom) => {
+          uom.name = capitalize(uom.name)
+        })
+      },
     })
   }
 

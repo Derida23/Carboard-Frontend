@@ -16,4 +16,6 @@ export interface ApiEndpoints {
   AUTH: AuthEndpoints
   USER: UserEndpoints
   UOM: UomEndpoints
+  PRODUCT: string
+  FILTER: string
 }

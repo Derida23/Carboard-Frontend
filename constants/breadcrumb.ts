@@ -33,3 +33,12 @@ export const CategoryLinks = [{
   label: 'Categories',
   icon: 'i-heroicons-truck',
 }]
+
+export const ProductLinks = [{
+  label: 'Dashboard',
+  icon: 'i-heroicons-home',
+  to: '/dashboard',
+}, {
+  label: 'Products',
+  icon: 'i-heroicons-cube',
+}]

@@ -17,7 +17,7 @@ const navLinks = reactive([
     { label: 'Activity Log', icon: 'i-heroicons-clock', to: '' },
   ],
   [
-    { label: 'Products', icon: 'i-heroicons-cube', to: '' },
+    { label: 'Products', icon: 'i-heroicons-cube', to: '/dashboard/products' },
     { label: 'Transactions', icon: 'i-heroicons-banknotes', to: '' },
     { label: 'Users', icon: 'i-heroicons-users', to: '' },
   ],

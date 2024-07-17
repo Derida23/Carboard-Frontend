@@ -15,4 +15,6 @@ export const API_ENDPOINT: ApiEndpoints = {
     TRANSMISSION: `/api/transmissions`,
     TYPE: `/api/types`,
   },
+  PRODUCT: '/api/products',
+  FILTER: '/api/filters',
 }
