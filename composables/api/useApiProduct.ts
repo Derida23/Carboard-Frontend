@@ -57,8 +57,20 @@ export function useApiProduct() {
     })
   }
 
+  const remove = async (
+    id: number,
+    options?: Partial<ApiFetchOptions<ApiProductListResponse>>,
+  ) => {
+    return await useApi<ApiProductListResponse>(`${API_ENDPOINT.PRODUCT}/${id}`, {
+      method: 'DELETE',
+      ...options,
+      watch: false,
+    })
+  }
+
   return {
     findAll,
     create,
+    remove,
   }
 }

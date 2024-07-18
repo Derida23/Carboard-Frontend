@@ -68,7 +68,16 @@ const navLinks = reactive([
             <UDivider class="my-4" />
             <!-- Full Sidenav -->
             <div v-if="!sidenavCollapsed" class="sidenav-menu">
-              <UVerticalNavigation :links="link">
+              <UVerticalNavigation
+                :links="link"
+                :ui="{
+                  padding: 'px-3 py-2 my-1',
+                  active: 'text-primary-500 dark:text-primary-400 before:bg-primary-300/50 dark:before:bg-primary-800/50',
+                  icon: {
+                    active: 'text-primary-500 dark:text-primary-400',
+                  },
+                }"
+              >
                 <template #icon="{ link: l }">
                   <IconCSS :name="l.icon" class="!h-5 !w-5" />
                 </template>

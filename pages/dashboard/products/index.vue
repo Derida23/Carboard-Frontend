@@ -2,6 +2,7 @@
 import { ProductLinks } from '~/constants/breadcrumb'
 import { ProductColumns } from '~/constants/table'
 import type { FilterData } from '~/types/responses/filter-response'
+import type { Notification } from '~/types'
 
 definePageMeta({
   layout: 'dashboard',
@@ -48,8 +49,8 @@ watch(debounceSearch, (value) => {
   params.value.name = value
 })
 
-const { findAll } = useApiProduct()
-const { data: products } = await findAll(params.value)
+const { findAll, remove } = useApiProduct()
+const { data: products, status, refresh } = await findAll(params.value)
 
 const { findAll: findFilter } = useApiFilter()
 const { data: dataFilter } = await findFilter()
@@ -72,6 +73,48 @@ watchOption('id_type')
 watchOption('id_fuel')
 watchOption('id_mark')
 watchOption('id_transmission')
+
+// Modal Function
+const modal = reactive({
+  delete: false,
+  notification: false,
+})
+const loading = ref(false)
+const productId = ref(0)
+
+function onOpenRemove(id: number) {
+  modal.delete = true
+  productId.value = id
+}
+async function onRemove() {
+  modal.delete = false
+  loading.value = true
+
+  if (productId.value) {
+    await remove(productId.value, {
+      onSuccess: () => {
+        loading.value = false
+        onNotification('success', 'Great!', 'Your data has been successfully deleted.')
+        refresh()
+      },
+      onError: (error) => {
+        loading.value = false
+        onNotification('error', 'Error', error.body.message)
+      },
+    })
+  }
+}
+
+const notification: Notification = reactive({
+  status: 'warning',
+  title: 'Forgot Password?',
+  description: 'Lorem ipsum',
+})
+
+function onNotification(type: 'warning' | 'error' | 'success', title: string, description: string) {
+  modal.notification = true
+  Object.assign(notification, { status: type, title, description })
+}
 </script>
 
 <template>
@@ -135,7 +178,11 @@ watchOption('id_transmission')
       </UButton>
     </div>
     <UCard>
-      <UTable :rows="products?.data" :columns="ProductColumns">
+      <UTable
+        :rows="products?.data"
+        :columns="ProductColumns"
+        :loading="status === 'pending'"
+      >
         <template #no-data="{ index }">
           {{ index + 1 }}
         </template>
@@ -144,9 +191,9 @@ watchOption('id_transmission')
             {{ column.label }}
           </p>
         </template>
-        <template #actions-data>
+        <template #actions-data="{ row }">
           <div class="products-table-actions">
-            <UButton color="red" variant="outline" icon="i-heroicons-trash">
+            <UButton color="red" variant="outline" icon="i-heroicons-trash" @click="onOpenRemove(row.id)">
               Delete
             </UButton>
             <UButton icon="i-heroicons-pencil-square">
@@ -160,6 +207,15 @@ watchOption('id_transmission')
         <UPagination v-model="params.page" :page-count="10" :total="products?.meta.total" />
       </div>
     </UCard>
+
+    <ModalDelete
+      v-model="modal.delete"
+      :loading
+      @submit="onRemove"
+      @close="modal.delete = false"
+    >
+      Are you sure? you would like to delete this product from the database? this action can't be undone
+    </ModalDelete>
   </div>
 </template>
 
