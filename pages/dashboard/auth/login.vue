@@ -62,10 +62,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
 function onNotification(type: 'warning' | 'error' | 'success', title: string, description: string) {
   isOpenForgot.value = true
-
-  notification.status = type
-  notification.title = title
-  notification.description = description
+  Object.assign(notification, { status: type, title, description })
 }
 </script>
 

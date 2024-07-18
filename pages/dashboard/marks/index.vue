@@ -128,10 +128,7 @@ const notification: Notification = reactive({
 
 function onNotification(type: 'warning' | 'error' | 'success', title: string, description: string) {
   modal.notification = true
-
-  notification.status = type
-  notification.title = title
-  notification.description = description
+  Object.assign(notification, { status: type, title, description })
 }
 </script>
 

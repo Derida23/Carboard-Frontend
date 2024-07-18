@@ -51,15 +51,15 @@ const image = ref({
 function onImageUpload(event: Event) {
   const input = event.target as HTMLInputElement
   if (input.files && input.files[0]) {
-    payload.image = input.files[0]
+    const file = input.files[0]
+    payload.image = file
 
     const reader = new FileReader()
     reader.onload = () => {
       image.value.preview = reader.result as string
       image.value.isEmptyFile = false
     }
-
-    reader.readAsDataURL(input.files[0])
+    reader.readAsDataURL(file)
   }
 }
 
@@ -91,7 +91,7 @@ async function onSubmit() {
   })
 }
 
-const isNotification = ref(true)
+const isNotification = ref(false)
 const notification: Notification = reactive({
   status: 'warning',
   title: 'Forgot Password?',
@@ -100,10 +100,7 @@ const notification: Notification = reactive({
 
 function onNotification(type: 'warning' | 'error' | 'success', title: string, description: string) {
   isNotification.value = true
-
-  notification.status = type
-  notification.title = title
-  notification.description = description
+  Object.assign(notification, { status: type, title, description })
 }
 </script>
 
@@ -117,11 +114,9 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
             <UFormGroup label="Name" name="name">
               <UInput v-model="payload.name" size="lg" placeholder="Please input name..." />
             </UFormGroup>
-
             <UFormGroup label="Description" name="description">
-              <UTextarea v-model="payload.description" size="lg" :rows="5" placeholder="Please input description..." />
+              <UTextarea v-model="payload.description" size="lg" rows="5" placeholder="Please input description..." />
             </UFormGroup>
-
             <UFormGroup label="Price" name="price">
               <UInput v-model="payload.price" size="lg" placeholder="Please input price..." type="number" />
             </UFormGroup>
@@ -130,15 +125,11 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
             <div class="create-form-image">
               <div class="create-form-image-upload flex-center">
                 <img
-                  v-if="image.preview"
-                  :src="image.preview"
-                  alt="Uploaded Image Preview"
+                  v-if="image.preview" :src="image.preview" alt="Uploaded Image Preview"
                   class="create-form-image-preview"
                 >
                 <div
-                  v-else
-                  class="create-form-image-file"
-                  :class="{ 'border-red-500 !bg-red-100': image.isEmptyFile }"
+                  v-else class="create-form-image-file" :class="{ 'border-red-500 !bg-red-100': image.isEmptyFile }"
                   @click="triggerFileInput"
                 >
                   <div class="create-form-image-text flex-center">
@@ -151,11 +142,14 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
                 </div>
               </div>
               <div class="create-form-image-noted">
-                <UButton v-if="image.preview" color="red" variant="ghost" icon="i-heroicons-trash" @click="image.preview = ''">
+                <UButton
+                  v-if="image.preview" color="red" variant="ghost" icon="i-heroicons-trash"
+                  @click="image.preview = ''"
+                >
                   Delete
                 </UButton>
                 <div v-else />
-                <p class="text-end italic text-sm ">
+                <p class="text-end italic text-sm">
                   <span class="text-red-500">*</span>please upload image jpg/png and horizontal scale
                 </p>
               </div>
@@ -169,57 +163,37 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
             <UFormGroup label="Seat" name="seat">
               <UInput v-model="payload.seat" size="lg" placeholder="Please input seat..." type="number" />
             </UFormGroup>
-
             <UFormGroup label="Category" name="id_type">
               <USelectMenu
-                v-model="payload.id_type"
-                :options="filter.types"
-                placeholder="Select category..."
-                size="lg"
-                option-attribute="name"
-                value-attribute="id"
+                v-model="payload.id_type" :options="filter.types" placeholder="Select category..." size="lg"
+                option-attribute="name" value-attribute="id"
               />
             </UFormGroup>
-
             <UFormGroup label="Mark" name="id_mark">
               <USelectMenu
-                v-model="payload.id_mark"
-                :options="filter.marks"
-                placeholder="Select mark..."
-                size="lg"
-                option-attribute="name"
-                value-attribute="id"
+                v-model="payload.id_mark" :options="filter.marks" placeholder="Select mark..." size="lg"
+                option-attribute="name" value-attribute="id"
               />
             </UFormGroup>
           </div>
           <div class="create-form-wrapper relative">
             <UFormGroup label="Transmission" name="id_transmission">
               <USelectMenu
-                v-model="payload.id_transmission"
-                :options="filter.transmissions"
-                placeholder="Select transmission..."
-                size="lg"
-                option-attribute="name"
-                value-attribute="id"
+                v-model="payload.id_transmission" :options="filter.transmissions"
+                placeholder="Select transmission..." size="lg" option-attribute="name" value-attribute="id"
               />
             </UFormGroup>
-
             <UFormGroup label="Fuel" name="id_fuel">
               <USelectMenu
-                v-model="payload.id_fuel"
-                :options="filter.fuels"
-                placeholder="Select fuel..."
-                size="lg"
-                option-attribute="name"
-                value-attribute="id"
+                v-model="payload.id_fuel" :options="filter.fuels" placeholder="Select fuel..." size="lg"
+                option-attribute="name" value-attribute="id"
               />
             </UFormGroup>
-
             <div class="create-form-submit">
-              <UButton size="lg" variant="outline" :disabled="loading">
+              <UButton size="lg" variant="outline" :disabled="loading" to="/dashboard/products">
                 Cancel
               </UButton>
-              <UButton size="lg" type="submit" :loading>
+              <UButton size="lg" type="submit" :loading="loading">
                 Create Product
               </UButton>
             </div>
@@ -229,11 +203,8 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
     </UForm>
 
     <ModalNotification
-      v-model="isNotification"
-      :prevent-close="notification.status === 'success'"
-      :status="notification.status"
-      :title="notification.title"
-      link="/dashboard/products"
+      v-model="isNotification" :prevent-close="notification.status === 'success'"
+      :status="notification.status" :title="notification.title" link="/dashboard/products"
       @close="isNotification = false"
     >
       <div v-html="notification.description" />
@@ -279,14 +250,14 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
 
       &-file {
         @apply cursor-pointer;
-        @apply  w-full;
-        @apply  h-full;
-        @apply  bg-orange-100/50;
-        @apply  hover:bg-orange-100;
-        @apply  rounded-3xl;
-        @apply  border-2;
-        @apply  border-orange-300;
-        @apply  border-dashed;
+        @apply w-full;
+        @apply h-full;
+        @apply bg-orange-100/50;
+        @apply hover:bg-orange-100;
+        @apply rounded-3xl;
+        @apply border-2;
+        @apply border-orange-300;
+        @apply border-dashed;
       }
 
       &-text {
@@ -313,6 +284,7 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
     }
   }
 }
+
 .upload-container {
   @apply flex;
   @apply flex-col;
