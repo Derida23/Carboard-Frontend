@@ -8,7 +8,16 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  link: {
+    type: String,
+    default: undefined,
+  },
 })
+
+const emits = defineEmits<{
+  (e: 'close'): void
+}>()
+
 const isOpen = defineModel('isOpen')
 
 const imgUrl = computed<string>(() => {
@@ -39,6 +48,11 @@ const background = computed(() => {
         <p class="mt-3">
           <slot />
         </p>
+      </div>
+      <div v-if="link && status === 'success'" class="mt-5 flex justify-end">
+        <UButton block size="lg" color="blue" :to="link" @click="emits('close')">
+          Continue <UIcon name="i-heroicons-arrow-right" />
+        </UButton>
       </div>
     </div>
   </UModal>

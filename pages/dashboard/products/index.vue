@@ -18,15 +18,17 @@ interface Params {
   id_mark?: string
   id_transmission?: string
   id_type?: string
+  page: number
 }
 
 const search = ref('')
-const params = ref<Params>({
+const params = ref<Record<string, string | number | undefined> & Params>({
   name: '',
   id_fuel: undefined,
   id_mark: undefined,
   id_transmission: undefined,
   id_type: undefined,
+  page: 1,
 })
 const options = ref({
   id_fuel: [],
@@ -60,16 +62,16 @@ filter.value = {
 }
 
 // Watchers for Options
-function watchOption<K extends keyof typeof options.value, P extends keyof Params>(key: K, paramKey: P) {
-  watch(() => options.value[key], (value) => {
-    params.value[paramKey] = value.length > 0 ? JSON.stringify(value) : undefined
+function watchOption(key: string) {
+  watch(() => options.value[key as keyof typeof options.value], (value) => {
+    params.value[key as keyof typeof params.value] = value.length > 0 ? JSON.stringify(value) : undefined
   })
 }
 
-watchOption('id_type', 'id_type')
-watchOption('id_fuel', 'id_fuel')
-watchOption('id_mark', 'id_mark')
-watchOption('id_transmission', 'id_transmission')
+watchOption('id_type')
+watchOption('id_fuel')
+watchOption('id_mark')
+watchOption('id_transmission')
 </script>
 
 <template>
@@ -77,7 +79,7 @@ watchOption('id_transmission', 'id_transmission')
     <UBreadcrumb :links="ProductLinks" />
     <section>
       <UCard>
-        <div class="grid grid-cols-5 gap-x-4">
+        <div class="products-filter">
           <UInput
             v-model="search"
             icon="i-heroicons-magnifying-glass"
@@ -123,6 +125,15 @@ watchOption('id_transmission', 'id_transmission')
         </div>
       </UCard>
     </section>
+    <div class="flex justify-end ">
+      <UButton
+        icon="i-heroicons-plus"
+        size="lg"
+        @click="$router.push('/dashboard/products/create')"
+      >
+        Add Product
+      </UButton>
+    </div>
     <UCard>
       <UTable :rows="products?.data" :columns="ProductColumns">
         <template #no-data="{ index }">
@@ -134,7 +145,7 @@ watchOption('id_transmission', 'id_transmission')
           </p>
         </template>
         <template #actions-data>
-          <div class="flex flex-row gap-x-2 justify-center">
+          <div class="products-table-actions">
             <UButton color="red" variant="outline" icon="i-heroicons-trash">
               Delete
             </UButton>
@@ -144,6 +155,10 @@ watchOption('id_transmission', 'id_transmission')
           </div>
         </template>
       </UTable>
+
+      <div class="products-table-pagination">
+        <UPagination v-model="params.page" :page-count="10" :total="products?.meta.total" />
+      </div>
     </UCard>
   </div>
 </template>
@@ -153,5 +168,30 @@ watchOption('id_transmission', 'id_transmission')
   @apply flex;
   @apply flex-col;
   @apply gap-y-5;
+
+  &-filter {
+    @apply grid;
+    @apply grid-cols-5;
+    @apply gap-x-4;
+  }
+
+  &-table {
+    &-actions {
+      @apply flex;
+      @apply flex-row;
+      @apply gap-x-2;
+      @apply justify-center;
+    }
+
+    &-pagination {
+      @apply flex;
+      @apply justify-end;
+      @apply px-3;
+      @apply py-3.5;
+      @apply border-t;
+      @apply border-gray-200;
+      @apply dark:border-gray-700;
+    }
+  }
 }
 </style>

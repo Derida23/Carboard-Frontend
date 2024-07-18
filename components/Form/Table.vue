@@ -62,7 +62,7 @@ const page = defineModel('page', {
       </template>
     </UTable>
 
-    <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
+    <div class="uom-table-pagination">
       <UPagination v-model="page" :page-count="10" :total="total" />
     </div>
   </div>
@@ -77,6 +77,16 @@ const page = defineModel('page', {
     @apply flex-row;
     @apply gap-x-2;
     @apply justify-center;
+  }
+
+  &-pagination {
+    @apply flex;
+    @apply justify-end;
+    @apply px-3;
+    @apply py-3.5;
+    @apply border-t;
+    @apply border-gray-200;
+    @apply dark:border-gray-700;
   }
 }
 </style>

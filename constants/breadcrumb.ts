@@ -42,3 +42,16 @@ export const ProductLinks = [{
   label: 'Products',
   icon: 'i-heroicons-cube',
 }]
+
+export const ProductCreateLinks = [{
+  label: 'Dashboard',
+  icon: 'i-heroicons-home',
+  to: '/dashboard',
+}, {
+  label: 'Products',
+  icon: 'i-heroicons-cube',
+  to: '/dashboard/products',
+}, {
+  label: 'Create Product',
+  icon: 'i-heroicons-document-plus',
+}]

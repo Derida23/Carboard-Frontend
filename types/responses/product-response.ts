@@ -22,11 +22,23 @@ export interface ProductData {
   image: string
   created_at: string
   updated_at: string
-  deleted_at: any
+  deleted_at: string | null
   type: UomData
   mark: UomData
   transmission: UomData
   fuel: UomData
+}
+
+export interface ProductPayload {
+  name: string | undefined
+  description: string | undefined
+  id_type: number | undefined
+  id_mark: number | undefined
+  price: number | undefined
+  seat: number | undefined
+  id_transmission: number | undefined
+  id_fuel: number | undefined
+  image: File | undefined
 }
 
 export type ApiProductListResponse = SuccesMessageList<ProductData[]>

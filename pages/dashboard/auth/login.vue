@@ -82,13 +82,13 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
         </section>
         <UForm :schema="LoginSchema" :state="state" class="space-y-4" @submit="onSubmit">
           <UFormGroup label="Email" name="email">
-            <UInput v-model="state.email" icon="i-heroicons-envelope" size="lg" />
+            <UInput v-model="state.email" icon="i-heroicons-envelope" size="lg" placeholder="Please input email..." />
           </UFormGroup>
 
           <UFormGroup label="Password" name="password">
             <UInput
               v-model="state.password" :type="showPassword ? 'text' : 'password'" icon="i-heroicons-lock-closed"
-              placeholder="********" :ui="{ icon: { trailing: { pointer: '' } } }" size="lg"
+              placeholder="Please input password..." :ui="{ icon: { trailing: { pointer: '' } } }" size="lg"
             >
               <template #trailing>
                 <UButton

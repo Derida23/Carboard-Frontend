@@ -40,7 +40,7 @@ watch(router.currentRoute, () => {
 
 <template>
   <div class="navbar-container">
-    <div class="navbar-wrapper">
+    <div class="navbar-wrapper z-10">
       <div class="navbar-content">
         <UButton
           icon="i-heroicons-bars-3" color="gray" padded variant="link"
