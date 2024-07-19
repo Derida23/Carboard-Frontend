@@ -22,11 +22,14 @@ export const ProductColumns = [{
   key: 'name',
   label: 'Name',
 }, {
-  key: 'seat',
-  label: 'Seat',
-}, {
   key: 'type.name',
   label: 'Category',
+}, {
+  key: 'price',
+  label: 'Price',
+}, {
+  key: 'seat',
+  label: 'Seat',
 }, {
   key: 'mark.name',
   label: 'Mark',

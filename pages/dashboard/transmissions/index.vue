@@ -141,13 +141,11 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
           v-model="search" class="col-span-3" icon="i-heroicons-magnifying-glass" placeholder="Search..."
           size="lg"
         />
-        <div class="transmissions-filter-date">
-          <div class="col-span-4">
-            <FormDatePicker v-model:start="params.start_date" v-model:end="params.end_date" />
-          </div>
+        <div class="col-span-4">
+          <FormDatePicker v-model:start="params.start_date" v-model:end="params.end_date" />
         </div>
-        <UButton icon="i-heroicons-plus" block size="lg" @click="onOpenModal('Create')">
-          Add Data
+        <UButton class="col-span-2" icon="i-heroicons-plus" block size="lg" @click="onOpenModal('Create')">
+          Create Transmission
         </UButton>
       </div>
     </UCard>
@@ -181,7 +179,7 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
 
   &-filter {
     @apply grid;
-    @apply grid-cols-7;
+    @apply grid-cols-9;
     @apply gap-5;
 
     &-date {

@@ -47,13 +47,9 @@ export async function useApi<T>(url: string, opts: ApiFetchOptions<T> = {}) {
 
       const toast = await nuxtApp.runWithContext(() => useToast())
       if (!excludedInterceptor(ctx.response.status)) {
-        // if (ctx.response.status === 401) {
-        //   toast.add({
-        //     color: 'red',
-        //     title: 'Session Expired',
-        //     description: 'Your session has expired, please log in.',
-        //   })
-        // }
+        if (ctx.response.status === 401) {
+          window.location.reload()
+        }
 
         if (ctx.response.status === 403) {
           toast.add({

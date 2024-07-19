@@ -24,7 +24,7 @@ const navLinks = reactive([
   [
     { label: 'Fuels', icon: 'i-heroicons-beaker', to: '/dashboard/fuels' },
     { label: 'Marks', icon: 'i-heroicons-cube-transparent', to: '/dashboard/marks' },
-    { label: 'Transmissions', icon: 'i-heroicons-cog', to: '/dashboard/transmissions' },
+    { label: 'Transmissions', icon: 'i-heroicons-arrow-path-rounded-square-solid', to: '/dashboard/transmissions' },
     { label: 'Categories', icon: 'i-heroicons-truck', to: '/dashboard/categories' },
   ],
   [
@@ -72,7 +72,7 @@ const navLinks = reactive([
                 :links="link"
                 :ui="{
                   padding: 'px-3 py-2 my-1',
-                  active: 'text-primary-500 dark:text-primary-400 before:bg-primary-300/50 dark:before:bg-primary-800/50',
+                  active: 'text-primary-500 dark:text-primary-400 before:bg-primary-200/50 dark:before:bg-primary-800/50',
                   icon: {
                     active: 'text-primary-500 dark:text-primary-400',
                   },
@@ -97,7 +97,7 @@ const navLinks = reactive([
                   active-class="
                       text-primary-500 dark:text-primary-400
                       hover:!text-primary-500 dark:hover:!text-primary-400
-                      bg-primary-300/50 dark:bg-primary-800/50
+                      bg-primary-200/50 dark:bg-primary-800/50
                       hover:!bg-primary-300/50 dark:hover:!bg-primary-800/50
                     "
                   variant="ghost"

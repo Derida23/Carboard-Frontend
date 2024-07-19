@@ -147,7 +147,7 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
           </div>
         </div>
         <UButton icon="i-heroicons-plus" block size="lg" @click="onOpenModal('Create')">
-          Add Marks
+          Create Mark
         </UButton>
       </div>
     </UCard>

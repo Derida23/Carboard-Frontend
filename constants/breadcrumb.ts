@@ -1,6 +1,6 @@
 export const FuelLinks = [{
   label: 'Dashboard',
-  icon: 'i-heroicons-home',
+  icon: 'i-heroicons-squares-2x2',
   to: '/dashboard',
 }, {
   label: 'Fuels',
@@ -9,7 +9,7 @@ export const FuelLinks = [{
 
 export const MarkLinks = [{
   label: 'Dashboard',
-  icon: 'i-heroicons-home',
+  icon: 'i-heroicons-squares-2x2',
   to: '/dashboard',
 }, {
   label: 'Marks',
@@ -18,16 +18,16 @@ export const MarkLinks = [{
 
 export const TransmissionLinks = [{
   label: 'Dashboard',
-  icon: 'i-heroicons-home',
+  icon: 'i-heroicons-squares-2x2',
   to: '/dashboard',
 }, {
-  label: 'Categories',
-  icon: 'i-heroicons-cog',
+  label: 'Transmissions',
+  icon: 'i-heroicons-arrow-path-rounded-square-solid',
 }]
 
 export const CategoryLinks = [{
   label: 'Dashboard',
-  icon: 'i-heroicons-home',
+  icon: 'i-heroicons-squares-2x2',
   to: '/dashboard',
 }, {
   label: 'Categories',
@@ -36,7 +36,7 @@ export const CategoryLinks = [{
 
 export const ProductLinks = [{
   label: 'Dashboard',
-  icon: 'i-heroicons-home',
+  icon: 'i-heroicons-squares-2x2',
   to: '/dashboard',
 }, {
   label: 'Products',
@@ -45,7 +45,7 @@ export const ProductLinks = [{
 
 export const ProductCreateLinks = [{
   label: 'Dashboard',
-  icon: 'i-heroicons-home',
+  icon: 'i-heroicons-squares-2x2',
   to: '/dashboard',
 }, {
   label: 'Products',
@@ -54,4 +54,30 @@ export const ProductCreateLinks = [{
 }, {
   label: 'Create Product',
   icon: 'i-heroicons-document-plus',
+}]
+
+export const ProductDetailLinks = [{
+  label: 'Dashboard',
+  icon: 'i-heroicons-squares-2x2',
+  to: '/dashboard',
+}, {
+  label: 'Products',
+  icon: 'i-heroicons-cube',
+  to: '/dashboard/products',
+}, {
+  label: 'Create Detail',
+  icon: 'i-heroicons-eye',
+}]
+
+export const ProductEditLinks = [{
+  label: 'Dashboard',
+  icon: 'i-heroicons-squares-2x2',
+  to: '/dashboard',
+}, {
+  label: 'Products',
+  icon: 'i-heroicons-cube',
+  to: '/dashboard/products',
+}, {
+  label: 'Product Edit',
+  icon: 'i-heroicons-pencil-square',
 }]

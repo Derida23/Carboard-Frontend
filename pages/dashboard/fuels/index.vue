@@ -158,7 +158,7 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
           size="lg"
           @click="onOpenModal('Create')"
         >
-          Add Fuels
+          Create Fuel
         </UButton>
       </div>
     </UCard>

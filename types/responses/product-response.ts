@@ -1,4 +1,4 @@
-import type { SuccesMessageList } from '..'
+import type { SuccesMessage, SuccesMessageList } from '..'
 import type { UomData } from './uom-response'
 
 export interface ProductParams {
@@ -42,3 +42,4 @@ export interface ProductPayload {
 }
 
 export type ApiProductListResponse = SuccesMessageList<ProductData[]>
+export type ApiProductResponse = SuccesMessage<ProductData>

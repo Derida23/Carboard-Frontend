@@ -8,6 +8,20 @@ export function useApiFilter() {
     return await useApi<ApiFilterResponse>(API_ENDPOINT.FILTER, {
       method: 'GET',
       ...options,
+      onSuccess: ({ body }) => {
+        body.data.fuels.forEach((filter) => {
+          filter.name = capitalize(filter.name)
+        })
+        body.data.marks.forEach((filter) => {
+          filter.name = capitalize(filter.name)
+        })
+        body.data.transmissions.forEach((filter) => {
+          filter.name = capitalize(filter.name)
+        })
+        body.data.types.forEach((filter) => {
+          filter.name = capitalize(filter.name)
+        })
+      },
     })
   }
 

@@ -25,7 +25,7 @@ const profileItems = [
   }],
   [
     { label: 'Your Profile', icon: 'i-heroicons-user-circle', to: '' },
-    { label: 'Add Account', icon: 'i-heroicons-user-plus', to: '' },
+    { label: 'Create Account', icon: 'i-heroicons-user-plus', to: '' },
   ],
   [{ label: 'Try Enterprise', icon: 'i-heroicons-globe-alt', to: '', slot: 'special' }],
   [{ label: 'Logout', click: () => { token.value = null; window.location.reload() } }],

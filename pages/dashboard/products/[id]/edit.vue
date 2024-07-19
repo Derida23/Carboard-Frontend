@@ -1,23 +1,26 @@
 <script setup lang="ts">
-import { ProductCreateLinks } from '~/constants/breadcrumb'
+import { ProductEditLinks } from '~/constants/breadcrumb'
 import type { FilterData } from '~/types/responses/filter-response'
-import { ProductSchema } from '~/schemas/product-schema'
 import type { ProductPayload } from '~/types/responses/product-response'
+import { ProductSchema } from '~/schemas/product-schema'
 import type { Notification } from '~/types'
 
 definePageMeta({
   layout: 'dashboard',
-  title: 'Create Product',
+  title: 'Edit Product',
 })
 
 useHead({
-  title: 'Create Product',
+  title: 'Edit Product',
 })
+const route = useRoute()
 
-const { create } = useApiProduct()
+const { findId, update } = useApiProduct()
+const { data: product } = await findId(+route.params.id)
 const { findAll: findFilter } = useApiFilter()
 const { data: dataFilter } = await findFilter()
 
+const loading = ref(false)
 const filter = ref<FilterData>({
   fuels: [],
   marks: [],
@@ -48,6 +51,37 @@ const image = ref({
   preview: '',
 })
 
+if (product.value) {
+  const {
+    name,
+    description,
+    price,
+    seat,
+    id_type,
+    id_mark,
+    id_transmission,
+    id_fuel,
+  } = product.value?.data
+
+  Object.assign(payload, {
+    name,
+    description,
+    price,
+    seat,
+    id_type,
+    id_mark,
+    id_transmission,
+    id_fuel,
+  })
+}
+
+image.value.preview = product.value?.data.image ?? ''
+
+const fileInput = ref()
+function triggerFileInput() {
+  fileInput.value.click()
+}
+
 function onImageUpload(event: Event) {
   const input = event.target as HTMLInputElement
   if (input.files && input.files[0]) {
@@ -62,25 +96,12 @@ function onImageUpload(event: Event) {
     reader.readAsDataURL(file)
   }
 }
-
-const fileInput = ref()
-
-function triggerFileInput() {
-  fileInput.value.click()
-}
-
-const loading = ref(false)
 async function onSubmit() {
-  if (!payload.image) {
-    image.value.isEmptyFile = true
-    return
-  }
-
   loading.value = true
-  await create(payload, {
+  await update(+route.params.id, payload, {
     onSuccess: () => {
       loading.value = false
-      onNotification('success', 'Great!', 'Your data has been successfully created.')
+      onNotification('success', 'Great!', 'Your data has been successfully updated.')
     },
     onError: (error) => {
       loading.value = false
@@ -88,7 +109,6 @@ async function onSubmit() {
     },
   })
 }
-
 const isNotification = ref(false)
 const notification: Notification = reactive({
   status: 'warning',
@@ -103,12 +123,12 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
 </script>
 
 <template>
-  <div class="product-create">
-    <UBreadcrumb :links="ProductCreateLinks" />
+  <div class="product-edit">
+    <UBreadcrumb :links="ProductEditLinks" />
     <UForm :schema="ProductSchema" :state="payload" enctype="multipart/form-data" @submit="onSubmit">
       <UCard>
-        <div class="create-form-1">
-          <div class="create-form-wrapper">
+        <div class="edit-form-1">
+          <div class="edit-form-wrapper">
             <UFormGroup label="Name" name="name">
               <UInput v-model="payload.name" size="lg" placeholder="Please input name..." />
             </UFormGroup>
@@ -120,17 +140,17 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
             </UFormGroup>
           </div>
           <div>
-            <div class="create-form-image">
-              <div class="create-form-image-upload flex-center">
+            <div class="edit-form-image">
+              <div class="edit-form-image-upload flex-center">
                 <img
                   v-if="image.preview" :src="image.preview" alt="Uploaded Image Preview"
-                  class="create-form-image-preview"
+                  class="edit-form-image-preview"
                 >
                 <div
-                  v-else class="create-form-image-file" :class="{ 'border-red-500 !bg-red-100': image.isEmptyFile }"
+                  v-else class="edit-form-image-file" :class="{ 'border-red-500 !bg-red-100': image.isEmptyFile }"
                   @click="triggerFileInput"
                 >
-                  <div class="create-form-image-text flex-center">
+                  <div class="edit-form-image-text flex-center">
                     <UIcon name="i-heroicons-cloud-arrow-up" class="w-10 h-10 text-orange-400" />
                     <h4 class="text-center">
                       Upload Image
@@ -139,7 +159,7 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
                   </div>
                 </div>
               </div>
-              <div class="create-form-image-noted">
+              <div class="edit-form-image-noted">
                 <UButton
                   v-if="image.preview" color="red" variant="ghost" icon="i-heroicons-trash"
                   @click="image.preview = ''"
@@ -157,7 +177,7 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
       </UCard>
       <UCard class="mt-5">
         <div class="grid grid-cols-2 gap-x-5">
-          <div class="create-form-wrapper">
+          <div class="edit-form-wrapper">
             <UFormGroup label="Seat" name="seat">
               <UInput v-model="payload.seat" size="lg" placeholder="Please input seat..." type="number" />
             </UFormGroup>
@@ -174,7 +194,7 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
               />
             </UFormGroup>
           </div>
-          <div class="create-form-wrapper relative">
+          <div class="edit-form-wrapper relative">
             <UFormGroup label="Transmission" name="id_transmission">
               <USelectMenu
                 v-model="payload.id_transmission" :options="filter.transmissions"
@@ -187,12 +207,12 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
                 option-attribute="name" value-attribute="id"
               />
             </UFormGroup>
-            <div class="create-form-submit">
+            <div class="edit-form-submit">
               <UButton size="lg" variant="outline" :disabled="loading" to="/dashboard/products">
                 Cancel
               </UButton>
               <UButton size="lg" type="submit" :loading="loading">
-                Create Product
+                Edit Product
               </UButton>
             </div>
           </div>
@@ -211,12 +231,12 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
 </template>
 
 <style scoped lang="postcss">
-.product-create {
+.product-edit {
   @apply flex;
   @apply flex-col;
   @apply gap-y-5;
 
-  .create {
+  .edit {
     &-form-1 {
       @apply grid grid-cols-2 gap-x-5;
     }

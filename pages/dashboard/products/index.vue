@@ -3,6 +3,7 @@ import { ProductLinks } from '~/constants/breadcrumb'
 import { ProductColumns } from '~/constants/table'
 import type { FilterData } from '~/types/responses/filter-response'
 import type { Notification } from '~/types'
+import type { ProductData } from '~/types/responses/product-response'
 
 definePageMeta({
   layout: 'dashboard',
@@ -115,6 +116,31 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
   modal.notification = true
   Object.assign(notification, { status: type, title, description })
 }
+
+const router = useRouter()
+function items(row: ProductData) {
+  return [
+    [{
+      label: 'Detail',
+      icon: 'i-heroicons-eye',
+      click: () => {
+        router.push(`/dashboard/products/${row.id}`)
+      },
+    }, {
+      label: 'Edit',
+      icon: 'i-heroicons-pencil-square',
+      click: () => {
+        router.push(`/dashboard/products/${row.id}/edit`)
+      },
+    }, {
+      label: 'Delete',
+      icon: 'i-heroicons-trash',
+      click: () => {
+        onOpenRemove(row.id)
+      },
+    }],
+  ]
+}
 </script>
 
 <template>
@@ -168,16 +194,18 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
         </div>
       </UCard>
     </section>
-    <div class="flex justify-end ">
-      <UButton
-        icon="i-heroicons-plus"
-        size="lg"
-        @click="$router.push('/dashboard/products/create')"
-      >
-        Add Product
-      </UButton>
-    </div>
+
     <UCard>
+      <div class="flex justify-end mb-5">
+        <UButton
+          icon="i-heroicons-plus"
+          size="lg"
+          @click="$router.push('/dashboard/products/create')"
+        >
+          Create Product
+        </UButton>
+      </div>
+
       <UTable
         :rows="products?.data"
         :columns="ProductColumns"
@@ -186,6 +214,9 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
         <template #no-data="{ index }">
           {{ index + 1 }}
         </template>
+        <template #price-data="{ row }">
+          <p>Rp. {{ toMoney(row.price) }}</p>
+        </template>
         <template #actions-header="{ column }">
           <p class="text-center">
             {{ column.label }}
@@ -193,12 +224,9 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
         </template>
         <template #actions-data="{ row }">
           <div class="products-table-actions">
-            <UButton color="red" variant="outline" icon="i-heroicons-trash" @click="onOpenRemove(row.id)">
-              Delete
-            </UButton>
-            <UButton icon="i-heroicons-pencil-square">
-              Edit
-            </UButton>
+            <UDropdown :items="items(row)" :popper="{ arrow: true, placement: 'left-start' }">
+              <UButton color="gray" variant="ghost" trailing-icon="i-heroicons-ellipsis-vertical-16-solid" />
+            </UDropdown>
           </div>
         </template>
       </UTable>
