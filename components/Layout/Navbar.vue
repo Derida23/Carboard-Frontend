@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const { user } = storeToRefs(useAuthStore())
+
 const { toggleSideNav } = useLayoutStore()
 const search = ref(null)
 
@@ -17,8 +19,8 @@ const isDark = computed({
 
 const profileItems = [
   [{
-    label: 'Elysia',
-    sublabel: '2nd Flame Chaser',
+    label: user.value?.name || 'Account',
+    sublabel: user.value.email,
     avatar: 'https://avatars.githubusercontent.com/u/739984?v=4',
     slot: 'account',
     disabled: true,
@@ -27,7 +29,6 @@ const profileItems = [
     { label: 'Your Profile', icon: 'i-heroicons-user-circle', to: '' },
     { label: 'Create Account', icon: 'i-heroicons-user-plus', to: '' },
   ],
-  [{ label: 'Try Enterprise', icon: 'i-heroicons-globe-alt', to: '', slot: 'special' }],
   [{ label: 'Logout', click: () => { token.value = null; window.location.reload() } }],
 ]
 

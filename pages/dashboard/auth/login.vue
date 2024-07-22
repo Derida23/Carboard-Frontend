@@ -50,14 +50,26 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       )
 
       token.value = res.body.data.access_token
-      await checkCredentials()
-      await navigateTo('/dashboard')
+      const { data } = await checkCredentials()
+      await onRole(data.value?.data.role ?? '')
     },
     onError: (error) => {
       isLoading.value = false
       onNotification('error', error.body.error, error.body.message)
     },
   })
+}
+
+async function onRole(role: string) {
+  if (role === 'admin') {
+    await navigateTo('/dashboard')
+  }
+  else {
+    const token = useCookie('user/token')
+    token.value = null
+
+    onNotification('error', 'Unauthorized', 'Your Account is not permitted to request to some endpoints.')
+  }
 }
 
 function onNotification(type: 'warning' | 'error' | 'success', title: string, description: string) {
