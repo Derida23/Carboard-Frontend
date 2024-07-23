@@ -131,7 +131,7 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
                   @click="triggerFileInput"
                 >
                   <div class="create-form-image-text flex-center">
-                    <UIcon name="i-heroicons-cloud-arrow-up" class="w-10 h-10 text-orange-400" />
+                    <UIcon name="i-heroicons-cloud-arrow-up" class="w-10 h-10 text-orange-400 dark:text-orange-500" />
                     <h4 class="text-center">
                       Upload Image
                     </h4>
@@ -156,7 +156,7 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
         </div>
       </UCard>
       <UCard class="mt-5">
-        <div class="grid grid-cols-2 gap-x-5">
+        <div class="create-form-container">
           <div class="create-form-wrapper">
             <UFormGroup label="Seat" name="seat">
               <UInput v-model="payload.seat" size="lg" placeholder="Please input seat..." type="number" />
@@ -221,6 +221,12 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
       @apply grid grid-cols-2 gap-x-5;
     }
 
+    &-form-container {
+      @apply grid;
+      @apply grid-cols-2;
+      @apply gap-x-5;
+    }
+
     &-form-wrapper {
       @apply flex;
       @apply flex-col;
@@ -251,10 +257,13 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
         @apply w-full;
         @apply h-full;
         @apply bg-orange-100/50;
+        @apply dark:bg-slate-800;
         @apply hover:bg-orange-100;
+        @apply dark:hover:bg-slate-600;
         @apply rounded-3xl;
         @apply border-2;
         @apply border-orange-300;
+        @apply dark:border-orange-400;
         @apply border-dashed;
       }
 

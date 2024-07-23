@@ -58,9 +58,9 @@ const isDark = computed({
 
 <template>
   <div class="relative">
-    <div class="absolute z-10 w-full h-full cursor-pointer" @click="open = true" />
+    <div class="datepicker-container" @click="open = true" />
     <UPopover v-model:open="open" :popper="{ placement: 'bottom-start' }">
-      <UFormGroup class="lg:mr-2 w-full">
+      <UFormGroup class="mr-2 w-full">
         <UInput
           readonly
           :value="rangeValue"
@@ -85,4 +85,12 @@ const isDark = computed({
   </div>
 </template>
 
-<style scoped lang="postcss"></style>
+<style scoped lang="postcss">
+.datepicker-container {
+ @apply absolute;
+ @apply z-10;
+ @apply w-full;
+ @apply h-full;
+ @apply cursor-pointer;
+}
+</style>

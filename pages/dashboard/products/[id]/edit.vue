@@ -271,10 +271,13 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
         @apply w-full;
         @apply h-full;
         @apply bg-orange-100/50;
+        @apply dark:bg-slate-800;
         @apply hover:bg-orange-100;
+        @apply dark:hover:bg-slate-600;
         @apply rounded-3xl;
         @apply border-2;
         @apply border-orange-300;
+        @apply dark:border-orange-400;
         @apply border-dashed;
       }
 

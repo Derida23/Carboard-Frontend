@@ -167,6 +167,7 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
         @apply mt-2;
         @apply mb-5;
         @apply text-slate-800;
+        @apply dark:text-slate-400;
       }
 
       img {
@@ -189,6 +190,7 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
       &-card {
         @apply relative;
         @apply bg-orange-50;
+        @apply dark:bg-orange-900;
         @apply rounded-[3rem];
         @apply w-full;
         @apply h-full;
@@ -199,6 +201,7 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
           @apply pl-3;
           @apply text-5xl;
           @apply text-slate-800;
+          @apply dark:text-white;
           @apply font-bold;
           @apply leading-tight;
         }

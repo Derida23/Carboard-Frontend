@@ -18,13 +18,13 @@ const { data: product } = await findId(+route.params.id)
 </script>
 
 <template>
-  <div class="flex flex-col gap-y-5">
+  <div class="product">
     <UBreadcrumb :links="ProductDetailLinks" />
     <UCard class="p-10">
-      <section class="grid grid-cols-2 gap-x-5">
+      <section class="product-wrapper">
         <div>
           <h2>{{ product?.data.name }}</h2>
-          <div class="flex mt-1 text-orange-500">
+          <div class="product-name">
             <span class="text-sm">Rp.</span>
             <div class="flex items-end">
               <h4>{{ toMoney(product?.data.price ?? 0) }} </h4>/day
@@ -34,10 +34,10 @@ const { data: product } = await findId(+route.params.id)
         </div>
         <div>
           <h4>Description</h4>
-          <p class="mt-2 text-sm text-slate-600">
+          <p class="product-description">
             {{ product?.data.description }}
           </p>
-          <section class="grid grid-cols-2 mt-5">
+          <section class="product-detail-wrapper">
             <div>
               <h5>
                 Category
@@ -51,7 +51,7 @@ const { data: product } = await findId(+route.params.id)
               <p>{{ capitalize(product?.data.mark.name ?? "") }}</p>
             </div>
           </section>
-          <section class="grid grid-cols-2 mt-5">
+          <section class="product-detail-wrapper">
             <div>
               <h5>
                 Transmission
@@ -65,7 +65,7 @@ const { data: product } = await findId(+route.params.id)
               <p>{{ capitalize(product?.data.fuel.name ?? "") }}</p>
             </div>
           </section>
-          <section class="grid grid-cols-2 mt-5">
+          <section class="product-detail-wrapper">
             <div>
               <h5>
                 Seat
@@ -81,7 +81,7 @@ const { data: product } = await findId(+route.params.id)
           </section>
         </div>
       </section>
-      <section class="flex justify-end gap-x-2 mt-5">
+      <section class="product-button">
         <UButton size="lg" variant="outline" to="/dashboard/products">
           Back
         </UButton>
@@ -93,4 +93,42 @@ const { data: product } = await findId(+route.params.id)
   </div>
 </template>
 
-<style scoped lang="postcss"></style>
+<style scoped lang="postcss">
+.product {
+  @apply flex;
+  @apply flex-col;
+  @apply gap-y-5;
+
+  &-wrapper {
+    @apply grid;
+    @apply grid-cols-2;
+    @apply gap-x-5;
+  }
+
+  &-name {
+    @apply flex;
+    @apply mt-1;
+    @apply text-orange-500;
+  }
+
+  &-description {
+    @apply mt-2;
+    @apply text-sm;
+    @apply text-slate-600;
+  }
+
+  &-button {
+    @apply flex;
+    @apply justify-end;
+    @apply gap-x-2;
+    @apply mt-5;
+  }
+
+  &-detail-wrapper {
+    @apply grid;
+    @apply grid-cols-2;
+    @apply gap-x-5;
+  }
+
+}
+</style>

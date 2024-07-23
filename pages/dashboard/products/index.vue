@@ -196,7 +196,7 @@ function items(row: ProductData) {
     </section>
 
     <UCard>
-      <div class="flex justify-end mb-5">
+      <div class="products-button">
         <UButton
           icon="i-heroicons-plus"
           size="lg"
@@ -257,6 +257,12 @@ function items(row: ProductData) {
     @apply grid;
     @apply grid-cols-5;
     @apply gap-x-4;
+  }
+
+  &-button {
+    @apply flex;
+    @apply justify-end;
+    @apply mb-5;
   }
 
   &-table {

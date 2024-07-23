@@ -10,9 +10,5 @@ useHead({
 </script>
 
 <template>
-  <div>
-    Landing
-  </div>
+  ABOUTS
 </template>
-
-<style scoped lang="postcss"></style>

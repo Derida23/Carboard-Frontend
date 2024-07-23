@@ -25,7 +25,7 @@ export const TransmissionLinks = [{
   icon: 'i-heroicons-arrow-path-rounded-square-solid',
 }]
 
-export const CategoryLinks = [{
+export const CateoryLinks = [{
   label: 'Dashboard',
   icon: 'i-heroicons-squares-2x2',
   to: '/dashboard',
@@ -53,7 +53,7 @@ export const ProductCreateLinks = [{
   to: '/dashboard/products',
 }, {
   label: 'Create Product',
-  icon: 'i-heroicons-document-plus',
+  icon: 'i-heroicons-cog-6-tooth',
 }]
 
 export const ProductDetailLinks = [{
@@ -66,7 +66,7 @@ export const ProductDetailLinks = [{
   to: '/dashboard/products',
 }, {
   label: 'Create Detail',
-  icon: 'i-heroicons-eye',
+  icon: 'i-heroicons-cog-6-tooth',
 }]
 
 export const ProductEditLinks = [{
@@ -79,5 +79,5 @@ export const ProductEditLinks = [{
   to: '/dashboard/products',
 }, {
   label: 'Product Edit',
-  icon: 'i-heroicons-pencil-square',
+  icon: 'i-heroicons-cog-6-tooth',
 }]
