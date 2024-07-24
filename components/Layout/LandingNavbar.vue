@@ -13,13 +13,13 @@ const navLinks = [
     <nav class="nav-container">
       <div class=" nav-wrapper">
         <div class="flex items-center">
-          <img class="h-12 w-12" src="@/assets/images/logo.png" alt="Logo">
-          <div class="ml-2 font-semibold text-base">
-            <p class="text-2xl text-orange-400">
-              Car
+          <img class="h-14 w-14" src="~/assets/images/logo.png" alt="Logo">
+          <div class="text-center ml-2">
+            <p class="text-2xl font-bold text-orange-400">
+              CAR
             </p>
-            <p class="-mt-1">
-              Board
+            <p class="-mt-2 text-lg font-semibold">
+              board
             </p>
           </div>
         </div>
@@ -29,7 +29,7 @@ const navLinks = [
             v-for="(link, index) in navLinks"
             :key="index"
             :to="link.to"
-            class="text-slate-900 px-2 py-2 text-base hover:text-orange-500 "
+            class="text-slate-900 px-2 py-2 text-base hover:text-orange-500 font-semibold"
             active-class="text-orange-400"
           >
             {{ link.label }}
@@ -38,7 +38,7 @@ const navLinks = [
             <UButton variant="link" size="lg" color="black">
               <span class="text-base">Login</span>
             </UButton>
-            <UButton color="orange" variant="outline">
+            <UButton color="orange" variant="outline" :ui="{ rounded: 'rounded-none' }" size="xl">
               <div class="flex items-center gap-x-2">
                 <p>
                   Register Now
