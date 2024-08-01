@@ -55,9 +55,10 @@ const navLinks = [
 
 <style scoped lang="postcss">
 .nav {
-  @apply bg-white;
+  /* @apply bg-white; */
   @apply sticky;
   @apply top-0;
+  @apply z-50;
 
   &-container {
     @apply max-w-7xl;

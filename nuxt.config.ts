@@ -17,9 +17,13 @@ export default defineNuxtConfig({
     '@samk-dev/nuxt-vcalendar',
     'nuxt-echarts',
     'dayjs-nuxt',
+    '@nuxt/image',
   ],
   imports: {
     dirs: ['stores', 'composables/api'],
   },
   css: ['~/assets/css/main.css'],
+  image: {
+    dir: 'assets/images',
+  },
 })

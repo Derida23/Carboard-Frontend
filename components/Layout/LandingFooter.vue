@@ -9,7 +9,7 @@ const navLinks = [
 </script>
 
 <template>
-  <footer class="absolute bottom-0 w-full">
+  <footer class="w-full">
     <section class="max-w-7xl py-5 mx-auto ">
       <div class="flex items-center justify-between">
         <img src="~/assets/images/logo.png" alt="logo" class="w-10 h-10">
