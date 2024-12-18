@@ -7,7 +7,6 @@ import {
   getRouterParam,
   proxyRequest,
 } from 'h3'
-import { api_version } from '~/constants/endpoint'
 
 export default defineEventHandler((event) => {
   const requestedWith = getRequestHeader(event, 'x-requested-with')

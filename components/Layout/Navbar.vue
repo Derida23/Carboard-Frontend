@@ -2,7 +2,7 @@
 const { user } = storeToRefs(useAuthStore())
 
 const { toggleSideNav } = useLayoutStore()
-const search = ref(null)
+const search = ref(undefined)
 
 const breakpoint = useBreakpoint()
 const token = useCookie('user/token')
@@ -21,7 +21,7 @@ const profileItems = [
   [{
     label: user.value?.name || 'Account',
     sublabel: user.value.email,
-    avatar: 'https://avatars.githubusercontent.com/u/739984?v=4',
+    avatar: { src: 'https://avatars.githubusercontent.com/u/739984?v=4' },
     slot: 'account',
     disabled: true,
   }],
@@ -29,7 +29,10 @@ const profileItems = [
     { label: 'Your Profile', icon: 'i-heroicons-user-circle', to: '' },
     { label: 'Create Account', icon: 'i-heroicons-user-plus', to: '' },
   ],
-  [{ label: 'Logout', click: () => { token.value = null; window.location.reload() } }],
+  [{ label: 'Logout', click: () => {
+    token.value = null
+    window.location.reload()
+  } }],
 ]
 
 const router = useRouter()

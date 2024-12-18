@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+
   runtimeConfig: {
     // eslint-disable-next-line node/prefer-global/process
     apiUrl: process.env.NUXT_API_URL,
@@ -8,9 +9,11 @@ export default defineNuxtConfig({
       siteTitle: 'Carboard',
     },
   },
+
   colorMode: {
     preference: 'light',
   },
+
   modules: [
     '@nuxt/ui',
     '@pinia/nuxt',
@@ -19,11 +22,16 @@ export default defineNuxtConfig({
     'dayjs-nuxt',
     '@nuxt/image',
   ],
+
   imports: {
     dirs: ['stores', 'composables/api'],
   },
+
   css: ['~/assets/css/main.css'],
+
   image: {
     dir: 'assets/images',
   },
+
+  compatibilityDate: '2024-12-18',
 })

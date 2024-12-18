@@ -1,5 +1,5 @@
-import { API_ENDPOINT } from "~/constants/endpoint";
-import type { ApiMeResponse } from "~/types/responses/user-response";
+import { API_ENDPOINT } from '~/constants/endpoint'
+import type { ApiMeResponse } from '~/types/responses/user-response'
 
 export const useAuthStore = defineStore('auth-store', () => {
   const user = ref()
@@ -18,6 +18,6 @@ export const useAuthStore = defineStore('auth-store', () => {
   return {
     user,
     isAuthenticated,
-    checkCredentials
+    checkCredentials,
   }
 })

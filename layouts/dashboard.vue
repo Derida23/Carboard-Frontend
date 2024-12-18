@@ -5,7 +5,7 @@ const { overlay } = storeToRefs(useOverlay())
 <template>
   <div class="layout-container relative">
     <div v-if="overlay" class="absolute z-[999] w-screen h-[98%] overlay flex items-center justify-center">
-      <GlobalOverlay />
+      <Overlay />
     </div>
     <LayoutSidebar />
     <LayoutNavbar>

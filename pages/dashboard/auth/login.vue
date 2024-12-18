@@ -66,7 +66,7 @@ async function onRole(role: string) {
   }
   else {
     const token = useCookie('user/token')
-    token.value = null
+    token.value = undefined
 
     onNotification('error', 'Unauthorized', 'Your Account is not permitted to request to some endpoints.')
   }

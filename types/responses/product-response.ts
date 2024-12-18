@@ -22,7 +22,7 @@ export interface ProductData {
   image: string
   created_at: string
   updated_at: string
-  deleted_at: string | null
+  deleted_at: string | undefined
   type: UomData
   mark: UomData
   transmission: UomData
