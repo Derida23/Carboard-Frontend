@@ -21,15 +21,19 @@ export async function useApi<T>(url: string, opts: ApiFetchOptions<T> = {}) {
   const { excludeInterceptor, ...options } = opts
 
   const nuxtApp = useNuxtApp()
+  const { overlay } = storeToRefs(useOverlay())
 
   const defaults: UseFetchOptions<T> = {
     async onRequest({ options }) {
+      overlay.value = true
       options.headers = new Headers(options.headers)
       options.headers.set('X-Requested-With', 'XMLHttpRequest')
     },
 
     async onResponse({ response }) {
       if (typeof opts.onSuccess === 'function' && response.status >= 200 && response.status < 300) {
+        overlay.value = false
+
         await opts.onSuccess({
           status: response.status,
           body: response._data,
@@ -46,6 +50,8 @@ export async function useApi<T>(url: string, opts: ApiFetchOptions<T> = {}) {
       }
 
       const toast = await nuxtApp.runWithContext(() => useToast())
+      overlay.value = false
+
       if (!excludedInterceptor(ctx.response.status)) {
         if (ctx.response.status === 401) {
           window.location.reload()

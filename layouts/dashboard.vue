@@ -1,5 +1,12 @@
+<script setup lang="ts">
+const { overlay } = storeToRefs(useOverlay())
+</script>
+
 <template>
-  <div class="layout-container">
+  <div class="layout-container relative">
+    <div v-if="overlay" class="absolute z-[999] w-screen h-[98%] overlay flex items-center justify-center">
+      <GlobalOverlay />
+    </div>
     <LayoutSidebar />
     <LayoutNavbar>
       <slot />
@@ -19,5 +26,8 @@
   @apply py-4;
   @apply px-2;
   @apply overflow-x-hidden;
+}
+.overlay {
+  backdrop-filter: blur(2px);
 }
 </style>
