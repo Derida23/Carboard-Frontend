@@ -25,19 +25,28 @@ const props = defineProps({
     default: false,
   },
 })
+
 const emits = defineEmits<{
   (e: 'close'): void
   (e: 'submit', form: FormSubmitEvent<Schema>): void
 }>()
-const isOpen = defineModel('isOpen')
+
+const isOpen = defineModel('isOpen', { default: false })
 const payload = defineModel('payload', { default: { id: 0, name: undefined, description: undefined } })
+
 function close() {
   emits('close')
 }
+
 function onSubmit(event: FormSubmitEvent<Schema>) {
   emits('submit', event)
   close()
 }
+
+const route = useRoute()
+const feature = computed (() => {
+  return route.path.split('/').pop()
+})
 </script>
 
 <template>
@@ -47,7 +56,7 @@ function onSubmit(event: FormSubmitEvent<Schema>) {
         <div class="modal-form-title-icon">
           <img v-if="!payload.id" src="~/assets/images/save.png" alt="logo" class="w-10">
           <img v-else src="~/assets/images/update.png" alt="logo" class="w-10">
-          <h4>{{ props.title }} Fuel</h4>
+          <h4>{{ props.title }} {{ feature }}</h4>
         </div>
         <UButton icon="i-heroicons-x-mark-20-solid" color="gray" variant="link" @click="close" />
       </div>
@@ -58,7 +67,7 @@ function onSubmit(event: FormSubmitEvent<Schema>) {
           </UFormGroup>
 
           <UFormGroup label="Description" name="description">
-            <UTextarea v-model="payload.description" size="lg" placeholder="Please input description..." rows="5" />
+            <UTextarea v-model="payload.description" size="lg" placeholder="Please input description..." :rows="5" />
           </UFormGroup>
 
           <div class="modal-form-action">

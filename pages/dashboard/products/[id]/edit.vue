@@ -133,7 +133,7 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
               <UInput v-model="payload.name" size="lg" placeholder="Please input name..." />
             </UFormGroup>
             <UFormGroup label="Description" name="description">
-              <UTextarea v-model="payload.description" size="lg" rows="5" placeholder="Please input description..." />
+              <UTextarea v-model="payload.description" size="lg" :rows="5" placeholder="Please input description..." />
             </UFormGroup>
             <UFormGroup label="Price" name="price">
               <UInput v-model="payload.price" size="lg" placeholder="Please input price..." type="number" />

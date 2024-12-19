@@ -25,7 +25,7 @@ export const TransmissionLinks = [{
   icon: 'i-heroicons-arrow-path-rounded-square-solid',
 }]
 
-export const CateoryLinks = [{
+export const CategoryLinks = [{
   label: 'Dashboard',
   icon: 'i-heroicons-squares-2x2',
   to: '/dashboard',

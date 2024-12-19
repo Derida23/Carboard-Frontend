@@ -232,7 +232,7 @@ function items(row: ProductData) {
       </UTable>
 
       <div class="products-table-pagination">
-        <UPagination v-model="params.page" :page-count="10" :total="products?.meta.total" />
+        <UPagination v-model="params.page" :page-count="10" :total="products?.meta.total ?? 0" />
       </div>
     </UCard>
 

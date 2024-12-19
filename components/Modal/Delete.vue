@@ -10,7 +10,7 @@ const emits = defineEmits<{
   (e: 'close'): void
   (e: 'submit'): void
 }>()
-const isOpen = defineModel('isOpen')
+const isOpen = defineModel('isOpen', { default: false })
 
 const imgUrl = computed<string>(() => {
   return new URL(`/assets/images/notification/trash.png`, import.meta.url).href
