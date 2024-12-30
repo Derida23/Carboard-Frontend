@@ -12,7 +12,7 @@ const props = defineProps({
     required: true,
   },
   rows: {
-    type: Array as PropType<UomData[] | undefined>,
+    type: Array as PropType<Record<string, any>[] | undefined>,
     required: true,
   },
   total: {
@@ -22,8 +22,8 @@ const props = defineProps({
 })
 
 const emits = defineEmits<{
-  (e: 'delete', row: UomData): void
-  (e: 'edit', row: UomData): void
+  (e: 'delete', row: Record<string, any>): void
+  (e: 'edit', row: Record<string, any>): void
 }>()
 
 const page = defineModel('page', {

@@ -43,3 +43,23 @@ export const ProductColumns = [{
   key: 'actions',
   label: 'Actions',
 }]
+
+export const UserColumns = [{
+  key: 'no',
+  label: 'No',
+}, {
+  key: 'name',
+  label: 'Name',
+}, {
+  key: 'email',
+  label: 'Email',
+}, {
+  key: 'role',
+  label: 'Role',
+}, {
+  key: 'created_at',
+  label: 'Created',
+}, {
+  key: 'actions',
+  label: 'Actions',
+}]

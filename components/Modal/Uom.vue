@@ -51,6 +51,7 @@ const feature = computed (() => {
 
 <template>
   <UModal v-model="isOpen">
+    <pre>{{ payload }}</pre>
     <div class="modal-form">
       <div class="modal-form-title">
         <div class="modal-form-title-icon">

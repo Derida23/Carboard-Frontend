@@ -18,17 +18,11 @@ useHead({
 })
 
 // Filter Table
-const search = ref('')
 const params = ref({
   name: '',
   start_date: undefined,
   end_date: undefined,
   page: 1,
-})
-
-const debounceSearch = useDebounce(search, 500)
-watch(debounceSearch, (value) => {
-  params.value.name = value
 })
 
 // Get Data
@@ -135,20 +129,14 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
 <template>
   <div class="transmissions">
     <UBreadcrumb :links="TransmissionLinks" />
+
     <UCard>
-      <div class="transmissions-filter ">
-        <UInput
-          v-model="search" class="col-span-3" icon="i-heroicons-magnifying-glass" placeholder="Search..."
-          size="lg"
-        />
-        <div class="col-span-4">
-          <FormDatePicker v-model:start="params.start_date" v-model:end="params.end_date" />
-        </div>
-        <UButton class="col-span-2" icon="i-heroicons-plus" block size="lg" @click="onOpenModal('Create')">
-          Create Transmission
-        </UButton>
-      </div>
+      <FormFilter
+        v-model:params="params"
+        @create="onOpenModal('Create')"
+      />
     </UCard>
+
     <UCard>
       <FormTable
         v-model:page="params.page" :columns="UomColumns" :rows="transmissions?.data" :loading="status === 'pending'"
@@ -176,18 +164,5 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
   @apply flex;
   @apply flex-col;
   @apply gap-y-5;
-
-  &-filter {
-    @apply grid;
-    @apply grid-cols-9;
-    @apply gap-5;
-
-    &-date {
-      @apply grid;
-      @apply grid-cols-4;
-      @apply gap-2;
-      @apply col-span-3;
-    }
-  }
 }
 </style>

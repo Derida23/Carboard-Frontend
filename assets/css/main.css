@@ -22,8 +22,15 @@ h5 {
   @apply text-lg;
   @apply font-semibold;
 }
+
 .flex-center {
   @apply flex;
   @apply items-center;
   @apply justify-center;
+}
+
+.dashboard-content {
+  @apply flex;
+  @apply flex-col;
+  @apply gap-y-5;
 }
