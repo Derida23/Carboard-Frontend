@@ -81,3 +81,12 @@ export const ProductEditLinks = [{
   label: 'Product Edit',
   icon: 'i-heroicons-cog-6-tooth',
 }]
+
+export const UserLinks = [{
+  label: 'Dashboard',
+  icon: 'i-heroicons-squares-2x2',
+  to: '/dashboard',
+}, {
+  label: 'Users',
+  icon: 'i-heroicons-users',
+}]

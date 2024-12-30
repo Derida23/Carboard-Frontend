@@ -5,9 +5,11 @@ export const api_version = 'v1'
 export const API_ENDPOINT: ApiEndpoints = {
   AUTH: {
     LOGIN: `/api/auth/login`,
+    REGISTER: `/api/auth/register`,
   },
   USER: {
     ME: `/api/users/me`,
+    ALL: `/api/users`,
   },
   UOM: {
     FUEL: `/api/fuels`,

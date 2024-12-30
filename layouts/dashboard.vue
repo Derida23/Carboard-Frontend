@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { overlay } = storeToRefs(useOverlay())
+const { overlay } = storeToRefs(useGlobalStore())
 </script>
 
 <template>
