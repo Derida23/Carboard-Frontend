@@ -21,7 +21,7 @@ export async function useApi<T>(url: string, opts: ApiFetchOptions<T> = {}) {
   const { excludeInterceptor, ...options } = opts
 
   const nuxtApp = useNuxtApp()
-  const { overlay } = storeToRefs(useOverlay())
+  const { overlay } = storeToRefs(useGlobalStore())
 
   const defaults: UseFetchOptions<T> = {
     async onRequest({ options }) {

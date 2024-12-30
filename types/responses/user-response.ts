@@ -1,4 +1,4 @@
-import type { SuccesMessage } from '..'
+import type { SuccesMessage, SuccesMessageList } from '..'
 
 export interface MeResponse {
   id: number
@@ -13,4 +13,18 @@ export interface MeResponse {
   deleted_at: Date | undefined
 }
 
+export interface UserData {
+  id: number
+  name: string
+  email: string
+  address: any
+  avatar: any
+  phone_number: any
+  role: string
+  created_at: string
+  updated_at: string
+  deleted_at: any
+}
+
 export type ApiMeResponse = SuccesMessage<MeResponse>
+export type ApiUserListResponse = SuccesMessageList<UserData[]>

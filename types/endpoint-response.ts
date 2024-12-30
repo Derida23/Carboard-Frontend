@@ -4,6 +4,7 @@ interface AuthEndpoints {
 
 interface UserEndpoints {
   ME: string
+  ALL: string
 }
 
 interface UomEndpoints {
