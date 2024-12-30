@@ -1,10 +1,6 @@
 <script setup lang="ts">
+import { getCurrentInstance, watchEffect } from 'vue'
 import type { UomData } from '~/types/responses/uom-response'
-
-interface TableColumn {
-  label: string
-  key: string
-}
 
 const props = defineProps({
   columns: {
@@ -24,7 +20,25 @@ const props = defineProps({
 const emits = defineEmits<{
   (e: 'delete', row: Record<string, any>): void
   (e: 'edit', row: Record<string, any>): void
+  (e: 'detail', row: Record<string, any>): void
 }>()
+
+const emitDetail = ref(false)
+
+const instance = getCurrentInstance()
+watchEffect(() => {
+  if (instance?.vnode.props?.onDetail) {
+    emitDetail.value = true
+  }
+  else {
+    emitDetail.value = false
+  }
+})
+
+interface TableColumn {
+  label: string
+  key: string
+}
 
 const page = defineModel('page', {
   default: 1,
@@ -58,6 +72,7 @@ const page = defineModel('page', {
           <UButton icon="i-heroicons-pencil-square" @click="emits('edit', row)">
             Edit
           </UButton>
+          <UButton v-if="emitDetail" icon="i-heroicons-document-magnifying-glass" variant="soft" @click="emits('detail', row)" />
         </div>
       </template>
     </UTable>

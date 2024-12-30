@@ -2,8 +2,10 @@
 import type { z } from 'zod'
 import { UserLinks } from '~/constants/breadcrumb'
 import { UserColumns } from '~/constants/table'
+import type { UserSchema } from '~/schemas/user-schema'
 import type { Notification } from '~/types'
 import type { UserPayload } from '~/types/payloads/user-payload'
+import type { FormSubmitEvent } from '#ui/types'
 
 type Schema = z.output<typeof UserSchema>
 
@@ -39,13 +41,15 @@ const modal = reactive({
   delete: false,
   notification: false,
   form: false,
+  detail: false,
+
 })
 
 const loading = ref(false)
 const title = ref('Create')
 const userId = ref(0)
 
-let payload = reactive<UserPayload>({
+const payload = ref<UserPayload>({
   name: '',
   email: '',
   address: undefined,
@@ -60,18 +64,21 @@ function onOpenModal(
 ) {
   userId.value = row?.id as number
 
-  if (mode !== 'Delete') {
+  payload.value = {
+    name: row.name,
+    email: row.email,
+    address: row?.address,
+    avatar: row?.avatar,
+    phone_number: row?.phone_number,
+    role: row.role,
+  }
+
+  if (mode === 'Update') {
     modal.form = true
     title.value = mode
-
-    payload = {
-      name: row.name,
-      email: row.email,
-      address: row?.address,
-      avatar: row?.avatar,
-      phone_number: row?.phone_number,
-      role: row.role,
-    }
+  }
+  else if (mode === 'Detail') {
+    modal.detail = true
   }
   else {
     modal.delete = true
@@ -114,6 +121,17 @@ async function onRemove() {
   })
 }
 
+function onDetail(type: string) {
+  modal.detail = false
+
+  if (type === 'delete') {
+    modal.delete = true
+  }
+  else {
+    onOpenModal('Update', payload.value)
+  }
+}
+
 const notification: Notification = reactive({
   status: 'warning',
   title: 'Forgot Password?',
@@ -143,6 +161,7 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
         :total="users?.meta.total"
         @delete="onOpenModal('Delete', $event as UserPayload)"
         @edit="onOpenModal('Update', $event as UserPayload)"
+        @detail="onOpenModal('Detail', $event as UserPayload)"
       />
     </UCard>
 
@@ -151,6 +170,8 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
     <ModalDelete v-model="modal.delete" :loading @submit="onRemove" @close="modal.delete = false">
       Are you sure? you would like to delete this user from the database? this action can't be undone
     </ModalDelete>
+
+    <SliderUser v-model:is-open="modal.detail" :payload @action="onDetail" />
 
     <ModalNotification v-model="modal.notification" :status="notification.status" :title="notification.title">
       <div v-html="notification.description" />

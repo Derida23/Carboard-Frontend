@@ -1,6 +1,14 @@
 <script setup lang="ts">
+import type { z } from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
 import { UserSchema } from '~/schemas/user-schema'
+import type { UserPayload } from '~/types/payloads/user-payload'
+
+type Schema = z.output<typeof UserSchema>
+
+const props = defineProps<{
+  loading: boolean
+}>()
 
 const emits = defineEmits<{
   (e: 'close'): void
@@ -8,7 +16,7 @@ const emits = defineEmits<{
 }>()
 
 const isOpen = defineModel('isOpen', { default: false })
-const payload = defineModel('payload', { default: { id: 0, name: undefined, email: undefined, role: undefined } })
+const payload = defineModel('payload', { default: {} as UserPayload })
 
 function close() {
   emits('close')
@@ -56,7 +64,7 @@ function onSubmit(event: FormSubmitEvent<Schema>) {
                 <UButton size="lg" variant="outline" block @click="close()">
                   Cancel
                 </UButton>
-                <UButton size="lg" type="submit" block :loading="loading">
+                <UButton size="lg" type="submit" block :loading="props.loading">
                   Update
                 </UButton>
               </div>

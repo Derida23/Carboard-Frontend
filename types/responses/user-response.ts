@@ -17,13 +17,13 @@ export interface UserData {
   id: number
   name: string
   email: string
-  address: any
-  avatar: any
-  phone_number: any
-  role: string
-  created_at: string
-  updated_at: string
-  deleted_at: any
+  address: string
+  avatar: string
+  phone_number: string
+  role: 'admin' | 'user'
+  created_at: Date
+  updated_at: Date
+  deleted_at: Date | undefined
 }
 
 export type ApiMeResponse = SuccesMessage<MeResponse>
