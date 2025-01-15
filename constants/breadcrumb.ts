@@ -65,7 +65,7 @@ export const ProductDetailLinks = [{
   icon: 'i-heroicons-cube',
   to: '/dashboard/products',
 }, {
-  label: 'Create Detail',
+  label: 'Product Detail',
   icon: 'i-heroicons-cog-6-tooth',
 }]
 

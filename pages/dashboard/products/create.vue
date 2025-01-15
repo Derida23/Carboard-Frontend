@@ -116,7 +116,11 @@ function onNotification(type: 'warning' | 'error' | 'success', title: string, de
               <UTextarea v-model="payload.description" size="lg" :rows="5" placeholder="Please input description..." />
             </UFormGroup>
             <UFormGroup label="Price" name="price">
-              <UInput v-model="payload.price" size="lg" placeholder="Please input price..." type="number" />
+              <UInput v-model="payload.price" size="lg" placeholder="Please input price..." type="number">
+                <template #trailing>
+                  <span class="text-gray-500 dark:text-gray-400 text-xs">Day</span>
+                </template>
+              </UInput>
             </UFormGroup>
           </div>
           <div>

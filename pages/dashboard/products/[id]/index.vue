@@ -32,11 +32,13 @@ const { data: product } = await findId(+route.params.id)
           </div>
           <img :src="product?.data.image" alt="image" class="w-[30rem] mt-5">
         </div>
-        <div>
-          <h4>Description</h4>
-          <p class="product-description">
-            {{ product?.data.description }}
-          </p>
+        <div class="space-y-5">
+          <section>
+            <h4>Description</h4>
+            <p class="product-description">
+              {{ product?.data.description }}
+            </p>
+          </section>
           <section class="product-detail-wrapper">
             <div>
               <h5>

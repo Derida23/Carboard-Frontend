@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useScroll } from '@vueuse/core'
+
 const navLinks = [
   { label: 'Home', to: '/' },
   { label: 'About', to: '/abouts' },
@@ -6,10 +8,19 @@ const navLinks = [
   { label: 'Our Team', to: '/teams' },
   { label: 'Contact', to: '/contacts' },
 ]
+
+const { y } = useScroll(window)
+
+const isNotAtTop = ref(false)
+
+// Watch the scroll position to determine if the user is not at the top
+watchEffect(() => {
+  isNotAtTop.value = y.value > 10
+})
 </script>
 
 <template>
-  <div class="nav">
+  <div class="nav" :class="[{ 'nav-blur': isNotAtTop }]">
     <nav class="nav-container">
       <div class=" nav-wrapper">
         <div class="flex items-center">
@@ -75,5 +86,11 @@ const navLinks = [
     @apply h-fit;
     @apply py-3;
   }
+}
+
+.nav-blur {
+  backdrop-filter: blur(83px);
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
 }
 </style>

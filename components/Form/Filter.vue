@@ -28,7 +28,7 @@ watch(debounceSearch, (value) => {
       <FormDatePicker v-model:start="params.start_date" v-model:end="params.end_date" />
     </div>
     <UButton :disabled="props.disableCreate" class="col-span-2" icon="i-heroicons-plus" block size="lg" @click="emits('create')">
-      Create {{ capitalize(feature) }}
+      Create {{ capitalize(feature ?? '') }}
     </UButton>
   </div>
 </template>

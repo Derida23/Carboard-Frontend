@@ -37,7 +37,7 @@ const navLinks = reactive([
 
 <template>
   <div
-    class="mr-2 lg:mr-4 z-30" :class="{
+    class="mr-2 lg:mr-4 z-30 transition-all" :class="{
       'absolute h-[-webkit-fill-available] mb-4': breakpoint.lt('md'),
       'w-[-webkit-fill-available]': !sidenavCollapsed && breakpoint.lt('md'),
       'hidden w-0': sidenavCollapsed && breakpoint.lt('md'),

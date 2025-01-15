@@ -29,6 +29,7 @@ export function useApiProduct() {
     return await useApi<ApiProductResponse>(`${API_ENDPOINT.PRODUCT}/${id}`, {
       method: 'GET',
       ...options,
+      onSuccess: () => {},
     })
   }
 

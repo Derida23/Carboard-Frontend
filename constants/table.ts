@@ -34,9 +34,6 @@ export const ProductColumns = [{
   key: 'mark.name',
   label: 'Mark',
 }, {
-  key: 'transmission.name',
-  label: 'Transmission',
-}, {
   key: 'fuel.name',
   label: 'Fuel',
 }, {
